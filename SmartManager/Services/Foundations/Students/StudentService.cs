@@ -12,7 +12,7 @@ using SmartManager.Models.Students;
 
 namespace SmartManager.Services.Foundations.Students
 {
-    public class StudentService
+    public class StudentService : IStudentService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
