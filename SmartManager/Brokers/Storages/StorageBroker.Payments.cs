@@ -24,7 +24,7 @@ namespace SmartManager.Brokers.Storages
         public async ValueTask<Payment> SelectPaymentByIdAsync(Guid paymentId) =>
             await SelectAsync<Payment>(paymentId);
 
-        public async ValueTask<Payment> UpdateAppolicantAsync(Payment payment) =>
+        public async ValueTask<Payment> UpdatePaymentAsync(Payment payment) =>
             await UpdateAsync(payment);
 
         public async ValueTask<Payment> DeletePaymentAsync(Payment payment) =>
