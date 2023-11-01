@@ -15,7 +15,7 @@ namespace SmartManager.Brokers.Storages
         ValueTask<Payment> InsertPaymentAsync(Payment payment);
         IQueryable<Payment> SelectAllPayments();
         ValueTask<Payment> SelectPaymentByIdAsync(Guid paymentId);
-        ValueTask<Payment> UpdateAppolicantAsync(Payment payment);
+        ValueTask<Payment> UpdatePaymentAsync(Payment payment);
         ValueTask<Payment> DeletePaymentAsync(Payment payment);
     }
 }

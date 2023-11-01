@@ -10,7 +10,7 @@ namespace SmartManager.Brokers.Storages
         ValueTask<Statistic> InsertStatisticAsync(Statistic statistic);
         IQueryable<Statistic> SelectAllStatistics();
         ValueTask<Statistic> SelectStatisticByIdAsync(Guid statisticId);
-        ValueTask<Statistic> UpdateAppolicantAsync(Statistic statistic);
+        ValueTask<Statistic> UpdateStatisticAsync(Statistic statistic);
         ValueTask<Statistic> DeleteStatisticAsync(Statistic statistic);
     }
 }

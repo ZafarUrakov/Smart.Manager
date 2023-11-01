@@ -23,7 +23,7 @@ namespace SmartManager.Brokers.Storages
         public async ValueTask<Statistic> SelectStatisticByIdAsync(Guid statisticId) =>
             await SelectAsync<Statistic>(statisticId);
 
-        public async ValueTask<Statistic> UpdateAppolicantAsync(Statistic statistic) =>
+        public async ValueTask<Statistic> UpdateStatisticAsync(Statistic statistic) =>
             await UpdateAsync(statistic);
 
         public async ValueTask<Statistic> DeleteStatisticAsync(Statistic statistic) =>

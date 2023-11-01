@@ -8,14 +8,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 
-namespace SmartManager.Services.Foundations.Statistics
+namespace SmartManager.Services.Processings.Statistics
 {
-    public interface IStatisticServise
+    public interface iStatisticProcessingService
     {
         ValueTask<Statistic> AddStatisticAsync(Statistic statistic);
         ValueTask<Statistic> RetrieveStatisticByIdAsync(Guid statisticid);
         IQueryable<Statistic> RetrieveAllStatistics();
         ValueTask<Statistic> ModifyStatisticAsync(Statistic statistic);
-        ValueTask<Statistic> RemoveStatisticAsync(Guid statisticId);
+        ValueTask<Statistic> RemoveStatisticAsync(Guid statisticid);
     }
 }

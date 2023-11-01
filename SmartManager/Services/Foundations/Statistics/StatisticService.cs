@@ -11,7 +11,7 @@ using System;
 
 namespace SmartManager.Services.Foundations.Statistics
 {
-    public class StatisticService : IStatisticServise
+    public class StatisticService : IStatisticService
     {
         private readonly IStorageBroker storageBroker;
 
