@@ -8,7 +8,7 @@ using SmartManager.Models.ExternalStudents;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SmartManager.Services.Foundations
+namespace SmartManager.Services.Foundations.Spreadsheets
 {
     public class SpreadsheetService : ISpreadsheetService
     {
@@ -22,7 +22,7 @@ namespace SmartManager.Services.Foundations
         public List<ExternalStudent> GetExternalStudents(MemoryStream stream)
         {
             List<ExternalStudent> externalStudents =
-                            this.spreadsheetBroker.ImportStudents(stream);
+                            spreadsheetBroker.ImportStudents(stream);
 
             return externalStudents;
         }

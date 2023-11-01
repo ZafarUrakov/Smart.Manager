@@ -4,11 +4,11 @@
 //===========================
 
 using SmartManager.Models.ExternalStudents;
-using SmartManager.Services.Foundations;
+using SmartManager.Services.Foundations.Spreadsheets;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SmartManager.Services.Processings
+namespace SmartManager.Services.Processings.Spreadsheets
 {
     public class SpreadsheetsProcessingService
     {
