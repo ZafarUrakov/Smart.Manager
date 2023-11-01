@@ -24,7 +24,7 @@ namespace SmartManager.Brokers.Storages
         public async ValueTask<Group> SelectGroupByIdAsync(Guid groupId) =>
             await SelectAsync<Group>(groupId);
 
-        public async ValueTask<Group> UpdateAppolicantAsync(Group group) =>
+        public async ValueTask<Group> UpdateGroupAsync(Group group) =>
             await UpdateAsync(group);
 
         public async ValueTask<Group> DeleteGroupAsync(Group group) =>
