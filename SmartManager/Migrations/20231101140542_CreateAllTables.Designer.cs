@@ -12,8 +12,8 @@ using SmartManager.Brokers.Storages;
 namespace SmartManager.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20231101121007_AddGroupsTable")]
-    partial class AddGroupsTable
+    [Migration("20231101140542_CreateAllTables")]
+    partial class CreateAllTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,7 +44,7 @@ namespace SmartManager.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Attendance");
+                    b.ToTable("Attendances");
                 });
 
             modelBuilder.Entity("SmartManager.Models.Groups.Group", b =>
