@@ -15,7 +15,7 @@ namespace SmartManager.Brokers.Storages
         ValueTask<Group> InsertGroupAsync(Group group);
         IQueryable<Group> SelectAllGroups();
         ValueTask<Group> SelectGroupByIdAsync(Guid groupId);
-        ValueTask<Group> UpdateAppolicantAsync(Group group);
+        ValueTask<Group> UpdateGroupAsync(Group group);
         ValueTask<Group> DeleteGroupAsync(Group group);
     }
 }

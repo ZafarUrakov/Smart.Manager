@@ -30,7 +30,7 @@ namespace SmartManager.Services.Foundations.Groups
             this.storageBroker.SelectAllGroups();
 
         public async ValueTask<Group> ModifyGroupAsync(Group group) =>
-            await this.storageBroker.UpdateAppolicantAsync(group);
+            await this.storageBroker.UpdateGroupAsync(group);
 
         public async ValueTask<Group> RemoveGroupAsync(Guid groupid)
         {

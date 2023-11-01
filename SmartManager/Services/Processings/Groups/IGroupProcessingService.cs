@@ -6,7 +6,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using System.Text.RegularExpressions;
+using SmartManager.Models.Groups;
 
 namespace SmartManager.Services.Processings.Groups
 {
