@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartManager.Migrations
 {
     /// <inheritdoc />
-    public partial class AddGroupsTable : Migration
+    public partial class CreateAllTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,7 +45,7 @@ namespace SmartManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Attendance",
+                name: "Attendances",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -55,9 +55,9 @@ namespace SmartManager.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Attendance", x => x.Id);
+                    table.PrimaryKey("PK_Attendances", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Attendance_Student_StudentId",
+                        name: "FK_Attendances_Student_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Student",
                         principalColumn: "Id");
@@ -84,8 +84,8 @@ namespace SmartManager.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Attendance_StudentId",
-                table: "Attendance",
+                name: "IX_Attendances_StudentId",
+                table: "Attendances",
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
@@ -103,7 +103,7 @@ namespace SmartManager.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Attendance");
+                name: "Attendances");
 
             migrationBuilder.DropTable(
                 name: "Payment");
