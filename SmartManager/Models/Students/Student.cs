@@ -7,6 +7,7 @@ using SmartManager.Models.Attendances;
 using SmartManager.Models.Groups;
 using SmartManager.Models.Payments;
 using System;
+using System.Collections.Generic;
 
 namespace SmartManager.Models.Students
 {
@@ -18,7 +19,7 @@ namespace SmartManager.Models.Students
         public string PhoneNumber { get; set; }
         public Gender Gender { get; set; }
         public Group Group { get; set; }
-        public Attendance Attendance { get; set; }
-        public Payment Payment { get; set; }
+        public List<Attendance> Attendance { get; set; }
+        public List<Payment> Payment { get; set; }
     }
 }

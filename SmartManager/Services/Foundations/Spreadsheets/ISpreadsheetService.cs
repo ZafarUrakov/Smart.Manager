@@ -7,10 +7,10 @@ using SmartManager.Models.ExternalStudents;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SmartManager.Services.Processings
+namespace SmartManager.Services.Foundations.Spreadsheets
 {
-    public interface ISpreadsheetsProcessingService
+    public interface ISpreadsheetService
     {
-        List<ExternalStudent> ReadExternalApplicants(MemoryStream stream);
+        List<ExternalStudent> GetExternalStudents(MemoryStream stream);
     }
 }
