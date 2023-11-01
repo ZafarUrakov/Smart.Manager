@@ -80,7 +80,36 @@ namespace SmartManager.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("SmartManager.Models.Statistics.Statistic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("FemaleStudentsCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaleStudentsCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaidStudentsCount")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PaidStudentsPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<decimal>("TotalPayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalStudentsCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statistics");
                 });
 
             modelBuilder.Entity("SmartManager.Models.Students.Student", b =>
@@ -101,6 +130,9 @@ namespace SmartManager.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("StatisticId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
@@ -108,13 +140,15 @@ namespace SmartManager.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("Student");
+                    b.HasIndex("StatisticId");
+
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("SmartManager.Models.Attendances.Attendance", b =>
                 {
                     b.HasOne("SmartManager.Models.Students.Student", "Student")
-                        .WithMany("Attendance")
+                        .WithMany("Attendances")
                         .HasForeignKey("StudentId");
 
                     b.Navigation("Student");
@@ -123,7 +157,7 @@ namespace SmartManager.Migrations
             modelBuilder.Entity("SmartManager.Models.Payments.Payment", b =>
                 {
                     b.HasOne("SmartManager.Models.Students.Student", "Student")
-                        .WithMany("Payment")
+                        .WithMany("Payments")
                         .HasForeignKey("StudentId");
 
                     b.Navigation("Student");
@@ -135,6 +169,10 @@ namespace SmartManager.Migrations
                         .WithMany("Students")
                         .HasForeignKey("GroupId");
 
+                    b.HasOne("SmartManager.Models.Statistics.Statistic", null)
+                        .WithMany("Students")
+                        .HasForeignKey("StatisticId");
+
                     b.Navigation("Group");
                 });
 
@@ -143,11 +181,16 @@ namespace SmartManager.Migrations
                     b.Navigation("Students");
                 });
 
+            modelBuilder.Entity("SmartManager.Models.Statistics.Statistic", b =>
+                {
+                    b.Navigation("Students");
+                });
+
             modelBuilder.Entity("SmartManager.Models.Students.Student", b =>
                 {
-                    b.Navigation("Attendance");
+                    b.Navigation("Attendances");
 
-                    b.Navigation("Payment");
+                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartManager.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateAllTables : Migration
+    public partial class AddAllTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,24 @@ namespace SmartManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Student",
+                name: "Statistics",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MaleStudentsCount = table.Column<int>(type: "int", nullable: false),
+                    FemaleStudentsCount = table.Column<int>(type: "int", nullable: false),
+                    TotalStudentsCount = table.Column<int>(type: "int", nullable: false),
+                    PaidStudentsCount = table.Column<int>(type: "int", nullable: false),
+                    PaidStudentsPercentage = table.Column<double>(type: "float", nullable: false),
+                    TotalPayment = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statistics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -32,15 +49,21 @@ namespace SmartManager.Migrations
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    StatisticId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Student", x => x.Id);
+                    table.PrimaryKey("PK_Students", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Student_Groups_GroupId",
+                        name: "FK_Students_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Students_Statistics_StatisticId",
+                        column: x => x.StatisticId,
+                        principalTable: "Statistics",
                         principalColumn: "Id");
                 });
 
@@ -57,14 +80,14 @@ namespace SmartManager.Migrations
                 {
                     table.PrimaryKey("PK_Attendances", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Attendances_Student_StudentId",
+                        name: "FK_Attendances_Students_StudentId",
                         column: x => x.StudentId,
-                        principalTable: "Student",
+                        principalTable: "Students",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payment",
+                name: "Payments",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -75,11 +98,11 @@ namespace SmartManager.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payment", x => x.Id);
+                    table.PrimaryKey("PK_Payments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payment_Student_StudentId",
+                        name: "FK_Payments_Students_StudentId",
                         column: x => x.StudentId,
-                        principalTable: "Student",
+                        principalTable: "Students",
                         principalColumn: "Id");
                 });
 
@@ -89,14 +112,19 @@ namespace SmartManager.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payment_StudentId",
-                table: "Payment",
+                name: "IX_Payments_StudentId",
+                table: "Payments",
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Student_GroupId",
-                table: "Student",
+                name: "IX_Students_GroupId",
+                table: "Students",
                 column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_StatisticId",
+                table: "Students",
+                column: "StatisticId");
         }
 
         /// <inheritdoc />
@@ -106,13 +134,16 @@ namespace SmartManager.Migrations
                 name: "Attendances");
 
             migrationBuilder.DropTable(
-                name: "Payment");
+                name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "Student");
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "Groups");
+
+            migrationBuilder.DropTable(
+                name: "Statistics");
         }
     }
 }

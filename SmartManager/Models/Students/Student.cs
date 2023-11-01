@@ -19,7 +19,7 @@ namespace SmartManager.Models.Students
         public string PhoneNumber { get; set; }
         public Gender Gender { get; set; }
         public Group Group { get; set; }
-        public List<Attendance> Attendance { get; set; }
-        public List<Payment> Payment { get; set; }
+        public List<Attendance> Attendances { get; set; }
+        public List<Payment> Payments { get; set; }
     }
 }
