@@ -10,7 +10,7 @@ using System.IO;
 
 namespace SmartManager.Services.Foundations
 {
-    public class SpreadsheetService
+    public class SpreadsheetService : ISpreadsheetService
     {
         private readonly ISpreadsheetBroker spreadsheetBroker;
 
