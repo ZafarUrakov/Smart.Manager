@@ -30,5 +30,12 @@ namespace SmartManager.Controllers
 
             return Ok(student);
         }
+
+        public IActionResult GetStudentsWithPaymentAsync(Guid groupId)
+        {
+            IQueryable<Student> students = this.studentProcessingService.RetrieveAllStudents().Where(s => s.Group.Id == groupId);
+
+            return View(students);
+        }
     }
 }
