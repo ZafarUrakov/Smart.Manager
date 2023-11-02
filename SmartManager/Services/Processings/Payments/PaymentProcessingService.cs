@@ -11,7 +11,7 @@ using System;
 
 namespace SmartManager.Services.Processings.Payments
 {
-    public class PaymentProcessingService
+    public class PaymentProcessingService : IPaymentProcessingService
     {
         private readonly IPaymentService paymentService;
 

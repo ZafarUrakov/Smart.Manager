@@ -12,8 +12,8 @@ using SmartManager.Brokers.Storages;
 namespace SmartManager.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20231101191417_AddAllTables")]
-    partial class AddAllTables
+    [Migration("20231102084058_AllTables")]
+    partial class AllTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -17,7 +17,6 @@ namespace SmartManager.Models.ExternalStudents
         public string PhoneNumber { get; set; }
         public DateTimeOffset BirthDate { get; set; }
         public Gender Gender { get; set; }
-        public Guid GroupId { get; set; }
-        public Group Group { get; set; }
+        public string GroupName { get; set; }
     }
 }

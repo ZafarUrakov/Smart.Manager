@@ -11,7 +11,7 @@ using System;
 
 namespace SmartManager.Services.Processings.Statistics
 {
-    public class StatisticProcessingService : iStatisticProcessingService
+    public class StatisticProcessingService :IStatisticProcessingService
     {
         private readonly IStatisticService statisticService;
 

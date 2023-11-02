@@ -17,20 +17,20 @@ using System.Threading.Tasks;
 
 namespace SmartManager.Services.Processings.Spreadsheets
 {
-    public class SpreadsheetsProcessingService
+    public class SpreadsheetsProcessingService : ISpreadsheetsProcessingService
     {
         private readonly ISpreadsheetService spreadsheetService;
-        private readonly IStudentProcessingService applicantProcessingService;
+        private readonly IStudentProcessingService studentProcessingService;
         private readonly IGroupProcessingService groupProcessingService;
         private readonly ILoggingBroker loggingBroker;
 
         public SpreadsheetsProcessingService(
-            IStudentProcessingService applicantProcessingService,
+            IStudentProcessingService studentProcessingService,
             IGroupProcessingService groupProcessingService,
             ILoggingBroker loggingBroker,
             ISpreadsheetService spreadsheetService)
         {
-            this.applicantProcessingService = applicantProcessingService;
+            this.studentProcessingService = studentProcessingService;
             this.groupProcessingService = groupProcessingService;
             this.loggingBroker = loggingBroker;
             this.spreadsheetService = spreadsheetService;
@@ -41,17 +41,16 @@ namespace SmartManager.Services.Processings.Spreadsheets
             List<ExternalStudent> validExternalStudents =
                 this.spreadsheetService.GetExternalStudents(stream);
 
-
             foreach (var externalStudent in validExternalStudents)
             {
 
                 Group ensureGroup =
                     await groupProcessingService
-                    .EnsureGroupExistsByName(externalStudent.Group.GroupName);
+                    .EnsureGroupExistsByName(externalStudent.GroupName);
 
-                Student applicant = MapToStudent(externalStudent, ensureGroup);
+                Student student = MapToStudent(externalStudent, ensureGroup);
 
-                await applicantProcessingService.AddStudentAsync(applicant);
+                await studentProcessingService.AddStudentAsync(student);
             }
         }
         private Student MapToStudent(ExternalStudent externalStudent, Group ensureGroup)

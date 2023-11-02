@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartManager.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAllTables : Migration
+    public partial class AllTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

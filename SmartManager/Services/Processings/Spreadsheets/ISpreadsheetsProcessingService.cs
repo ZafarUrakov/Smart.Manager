@@ -6,11 +6,12 @@
 using SmartManager.Models.ExternalStudents;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SmartManager.Services.Processings.Spreadsheets
 {
     public interface ISpreadsheetsProcessingService
     {
-        List<ExternalStudent> ReadExternalApplicants(MemoryStream stream);
+        Task ProcessImportRequest(MemoryStream stream);
     }
 }

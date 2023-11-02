@@ -9,6 +9,7 @@ using System;
 using SmartManager.Models.ExternalStudents;
 using Bytescout.Spreadsheet;
 using SmartManager.Models.Students;
+using SmartManager.Models.Groups;
 
 namespace SmartManager.Brokers.Spreadsheets
 {
@@ -31,10 +32,10 @@ namespace SmartManager.Brokers.Spreadsheets
                 externalStudent.Id = Guid.NewGuid();
                 externalStudent.GivenName = worksheet.Cell(row, 0).ToString();
                 externalStudent.Surname = worksheet.Cell(row, 1).ToString();
-                string genderString = worksheet.Cell(row, 2).ToString();
+                externalStudent.PhoneNumber = worksheet.Cell(row, 2).ToString();
+                string genderString = worksheet.Cell(row, 3).ToString();
                 externalStudent.Gender = ConvertToGender(genderString);
-                externalStudent.PhoneNumber = worksheet.Cell(row, 3).ToString();
-                externalStudent.Group.GroupName = worksheet.Cell(row, 4).ToString();
+                externalStudent.GroupName = worksheet.Cell(row, 4).ToString();
 
                 importStudents.Add(externalStudent);
             }

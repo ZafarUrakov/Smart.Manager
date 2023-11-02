@@ -22,7 +22,7 @@ namespace SmartManager.Services.Foundations.Spreadsheets
         public List<ExternalStudent> GetExternalStudents(MemoryStream stream)
         {
             List<ExternalStudent> externalStudents =
-                            spreadsheetBroker.ImportStudents(stream);
+                            this.spreadsheetBroker.ImportStudents(stream);
 
             return externalStudents;
         }
