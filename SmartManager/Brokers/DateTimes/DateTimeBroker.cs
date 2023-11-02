@@ -7,7 +7,7 @@ using System;
 
 namespace SmartManager.Brokers.DateTimes
 {
-    public class DateTimeBroker
+    public class DateTimeBroker : IDateTimeBroker
     {
         public DateTimeOffset GetCurrentDateTimeOffset() =>
             DateTimeOffset.UtcNow;

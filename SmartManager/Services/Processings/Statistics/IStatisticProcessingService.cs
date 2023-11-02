@@ -10,7 +10,7 @@ using System;
 
 namespace SmartManager.Services.Processings.Statistics
 {
-    public interface iStatisticProcessingService
+    public interface IStatisticProcessingService
     {
         ValueTask<Statistic> AddStatisticAsync(Statistic statistic);
         ValueTask<Statistic> RetrieveStatisticByIdAsync(Guid statisticid);
