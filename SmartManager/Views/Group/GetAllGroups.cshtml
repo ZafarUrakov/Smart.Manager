@@ -1,0 +1,35 @@
+﻿@model IQueryable<SmartManager.Models.Groups.Group>
+@{
+    ViewData["Title"] = "All Groups";
+}
+
+<h1>All Groups</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Group ID</th>
+            <th>Group Name</th>
+            <th>Students</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var group in Model)
+        {
+            <tr>
+                <td>@group.Id</td>
+                <td>@group.GroupName</td>
+                <td>
+
+                    <div class="button-container">
+                        <div class="action-buttons">
+                    <a asp-controller="Student" asp-route-groupId="@group.Id" asp-action="GetStudentWithPaymentAsync" class="btn btn-primary">
+                        <i class="bi bi-person-lines-fill"></i> Students
+                    </a>
+                    </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
