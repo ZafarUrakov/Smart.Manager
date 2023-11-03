@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartManager.Models.Groups;
 using SmartManager.Models.Students;
 using SmartManager.Services.Processings.Students;
 using System;
@@ -31,9 +32,17 @@ namespace SmartManager.Controllers
             return Ok(student);
         }
 
-        public IActionResult GetStudentsWithPaymentAsync(Guid groupId)
+        public IActionResult GetStudentsWithPayment(Guid groupId)
         {
-            IQueryable<Student> students = this.studentProcessingService.RetrieveAllStudents().Where(s => s.Group.Id == groupId);
+            IQueryable<Student> students = 
+                this.studentProcessingService.RetrieveAllStudents().Where(s => s.Group.Id == groupId);
+
+            var group = new Group();
+
+            foreach(var student in students)
+            {
+                student.Group = group;
+            }
 
             return View(students);
         }
