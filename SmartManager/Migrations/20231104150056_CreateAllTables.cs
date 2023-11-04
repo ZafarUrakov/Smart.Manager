@@ -6,11 +6,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartManager.Migrations
 {
     /// <inheritdoc />
-    public partial class AllTables : Migration
+    public partial class CreateAllTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Bots",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bots", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
@@ -38,6 +50,46 @@ namespace SmartManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Statistics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupStatistics",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MaleStudents = table.Column<int>(type: "int", nullable: false),
+                    FemaleStudents = table.Column<int>(type: "int", nullable: false),
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupStatistics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GroupStatistics_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentStatistics",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PaidPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NotPaidPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Groupid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentStatistics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentStatistics_Groups_Groupid",
+                        column: x => x.Groupid,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,9 +164,19 @@ namespace SmartManager.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GroupStatistics_GroupId",
+                table: "GroupStatistics",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_StudentId",
                 table: "Payments",
                 column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentStatistics_Groupid",
+                table: "PaymentStatistics",
+                column: "Groupid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_GroupId",
@@ -134,7 +196,16 @@ namespace SmartManager.Migrations
                 name: "Attendances");
 
             migrationBuilder.DropTable(
+                name: "Bots");
+
+            migrationBuilder.DropTable(
+                name: "GroupStatistics");
+
+            migrationBuilder.DropTable(
                 name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "PaymentStatistics");
 
             migrationBuilder.DropTable(
                 name: "Students");
