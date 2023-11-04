@@ -1,8 +1,29 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+﻿<table>
+    <thead>
+        <tr>
+            <th></th>  <!-- Пустая ячейка в левом верхнем углу -->
+            <th>Пн</th>
+            <th>Вт</th>
+            <th>Ср</th>
+            <th>Чт</th>
+            <th>Пт</th>
+            <th>Сб</th>
+            <th>Вс</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int row = 0; row < 6; row++)
+        {
+            <tr>
+                <th></th>  <!-- Пустая ячейка для даты -->
+                @for (int col = 0; col < 7; col++)
+                {
+                    <td>
+                        <input type="checkbox" />  <!-- Флажок для пометки дня -->
+                        <input type="text" />  <!-- Поле для задачи -->
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
