@@ -5,15 +5,18 @@
 
 using SmartManager.Models.Groups;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection.Metadata.Ecma335;
 
 namespace SmartManager.Models.PaymentStatistics
 {
-    public class PaymentStatistics
+    public class PaymentStatistic
     {
-        Guid Id { get; set; }
+        public Guid Id { get; set; }
         public decimal PaidPercentage { get; set; }
         public decimal NotPaidPercentage { get; set; }
+        public Guid Groupid { get; set; }
         public Group Group { get; set; }
     }
 }
