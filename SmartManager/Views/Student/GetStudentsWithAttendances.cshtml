@@ -54,8 +54,7 @@
                     <th scope="col">GivenName</th>
                     <th scope="col">Surname</th>
                     <th scope="col">PhoneNumber</th>
-                    <th scope="col">GroupName</th>
-                    @* <th scope="col">Attendance</th> *@
+                    <th scope="col">Attendances</th> 
                 </tr>
             </thead>
             <tbody>
@@ -69,16 +68,14 @@
                             <td>@item.Surname</td>
                             <td>@item.PhoneNumber</td>
                             <td>
-                            <td>
-                                <a asp-route-Id="@item.Id" asp-action="PutStudentAsync" class="btn btn-primary btn-md-custom">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
+                                <button class="btn btn-success toggle-attendance" data-student-id="@item.Id" data-is-present="true">
+                                    <i class="bi bi-check-circle"></i> Present
+                                </button>
+                                <button class="btn btn-danger toggle-attendance" data-student-id="@item.Id" data-is-present="false">
+                                    <i class="bi bi-x-circle"></i> Absent
+                                </button>
                             </td>
-                            <td>
-                                <a asp-route-Id="@item.Id" asp-action="DeleteStudentAsync" class="btn btn-danger btn-md-custom" onclick="return DeleteInput()">
-                                    <i class="bi bi-x-lg"></i>
-                                </a>
-                            </td>
+
                         </tr>
                         i++;
                     }
@@ -97,5 +94,34 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            $(".toggle-attendance").click(function () {
+                var button = $(this);
+                var studentId = button.data("student-id");
+                var isPresent = button.data("is-present");
+
+                $.post("/Attendance/UpdateAttendance", { studentId: studentId, isPresent: isPresent }, function (data) {
+                    if (data.success) {
+                        if (isPresent) {
+                            button.removeClass("btn-success").addClass("btn-secondary");
+                        } else {
+                            button.removeClass("btn-danger").addClass("btn-secondary");
+                        }
+                    } else {
+                        alert("Произошла ошибка при обновлении посещаемости.");
+                    }
+                });
+            });
+
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $(".searchable-row").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>

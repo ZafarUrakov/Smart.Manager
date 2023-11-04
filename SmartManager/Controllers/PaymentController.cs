@@ -25,7 +25,7 @@ namespace SmartManager.Controllers
             this.studentProcessingService = studentProcessingService;
         }
         [HttpPost]
-        public async ValueTask<ActionResult> UpdatePayment(Guid studentId,bool isPayed)
+        public async ValueTask<ActionResult> UpdatePaymentAsync(Guid studentId, bool isPayed)
         {
             var student =
                 this.studentProcessingService.RetrieveStudentByIdAsync(studentId);

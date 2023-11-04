@@ -18,8 +18,22 @@ namespace SmartManager.Controllers
         {
             this.groupProcessingService = groupProcessingService;
         }
+        public IActionResult GetGroups()
+        {
+            IQueryable<Group> groups = this.groupProcessingService.RetrieveAllGroups();
 
-        public IActionResult GetAllGroups()
+            return View(groups);
+        }
+
+        public IActionResult GetGroupsForAttendances()
+        {
+            IQueryable<Group> groups = this.groupProcessingService.RetrieveAllGroups();
+
+            return View(groups);
+        }
+
+
+        public IActionResult GetGroupsForPayments()
         {
             IQueryable<Group> groups = this.groupProcessingService.RetrieveAllGroups();
 

@@ -2,7 +2,7 @@
 @model IQueryable<Group>
 
 @{
-    ViewData["Title"] = "ShowGroups";
+    ViewData["Title"] = "ShowGroupsForAttendances";
 }
 
 <style>
@@ -37,7 +37,7 @@
     }
 
         .action-buttons .btn {
-            margin-left: 14px; 
+            margin-left: 14px;
             font-size: 14px;
             padding: 0.25rem 0.5rem;
         }
@@ -50,12 +50,7 @@
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2 class="text-dark">Group List</h2>
-        </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Group" asp-action="PostGroup" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> &nbsp; Add New Group
-            </a>
+            <h2 class="text-dark">Attendances</h2>
         </div>
     </div>
     <br />
@@ -91,7 +86,7 @@
                         <td>
                             <div class="button-container">
                                 <div class="action-buttons">
-                                    <a asp-controller="Student" asp-route-groupId="@item.Id" asp-action="GetStudentsWithPayment" class="btn btn-primary btn-sm">
+                                    <a asp-controller="Student" asp-route-groupId="@item.Id" asp-action="GetStudentsWithAttendances" class="btn btn-primary btn-sm">
                                         <i class="bi bi-opencollective" alt="Open Collective Icon"></i> Students
                                     </a>
                                 </div>

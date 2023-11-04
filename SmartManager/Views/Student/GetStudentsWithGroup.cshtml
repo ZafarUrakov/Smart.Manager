@@ -3,11 +3,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Add your head content here -->
 </head>
 <body>
+    <!-- Back arrow link -->
+    <a href="javascript:history.back()" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
+
 
     @{
-        ViewData["Title"] = "GetStudents";
+        ViewData["Title"] = "ShowstudentsWithGroup";
     }
     <style>
         .btn-md-custom {
@@ -15,20 +21,14 @@
             font-size: 1rem;
         }
     </style>
-
     <div class="container p-3">
         <div class="row pt-4">
             <div class="col-6">
-                <h2 class="text-dark">Student List</h2>
+                <h2 class="text-dark">student List</h2>
             </div>
             <div class="col-6 text-end">
-                <a asp-controller="Student" asp-action="GetStudents" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> &nbsp; Add New Student
-                </a>
-            </div>
-            <div class="col-6 text-end">
-                <a asp-controller="Spreadsheet" asp-action="Import" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> &nbsp; Import
+                <a asp-controller="student" asp-action="PostStudentAsync" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> &nbsp; Add New student
                 </a>
             </div>
         </div>
@@ -41,9 +41,9 @@
         </div>
         <br />
 
-        <div class="row">
+        <div class "row">
             <div class="col-12">
-                <p>Total Students: @Model.Count()</p>
+                <p>Total students: @Model.Count()</p>
             </div>
         </div>
 
@@ -51,11 +51,14 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">GivenName</th>
-                    <th scope="col">Surname</th>
+                    <th scope="col">FirstName</th>
+                    <th scope="col">LastName</th>
+                    <th scope="col">Email</th>
                     <th scope="col">PhoneNumber</th>
                     <th scope="col">GroupName</th>
-                    @* <th scope="col">Attendance</th> *@
+                    <th scope="col">CreatedDate</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,8 +72,7 @@
                             <td>@item.Surname</td>
                             <td>@item.PhoneNumber</td>
                             <td>
-                            <td>
-                                <a asp-route-Id="@item.Id" asp-action="PutStudentAsync" class="btn btn-primary btn-md-custom">
+                                <a asp-route-Id="@item.Id" asp-action="PutstudentInGroupAsync" class="btn btn-primary btn-md-custom">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                             </td>
@@ -86,6 +88,19 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        function DeleteInput() {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Student is Deleted',
+                showConfirmButton: false,
+                timer: 1000
+            })
+        }
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
