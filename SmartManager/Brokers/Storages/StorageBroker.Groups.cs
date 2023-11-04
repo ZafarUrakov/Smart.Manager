@@ -27,7 +27,9 @@ namespace SmartManager.Brokers.Storages
         public async ValueTask<Group> UpdateGroupAsync(Group group) =>
             await UpdateAsync(group);
 
-        public async ValueTask<Group> DeleteGroupAsync(Group group) =>
-            await DeleteAsync(group);
+        public async ValueTask<Group> DeleteGroupAsync(Group group)
+        {
+            return await DeleteAsync(group);
+        }
     }
 }

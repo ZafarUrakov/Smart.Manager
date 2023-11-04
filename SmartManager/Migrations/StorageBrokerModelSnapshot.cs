@@ -34,7 +34,7 @@ namespace SmartManager.Migrations
                     b.Property<bool>("IsPresent")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("StudentId")
+                    b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -100,7 +100,7 @@ namespace SmartManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Groupid")
+                    b.Property<Guid>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("NotPaidPercentage")
@@ -111,7 +111,7 @@ namespace SmartManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Groupid");
+                    b.HasIndex("GroupId");
 
                     b.ToTable("PaymentStatistics");
                 });
@@ -131,7 +131,7 @@ namespace SmartManager.Migrations
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("StudentId")
+                    b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -182,8 +182,11 @@ namespace SmartManager.Migrations
                     b.Property<string>("GivenName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("GroupId")
+                    b.Property<Guid>("GroupId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("GroupName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -207,7 +210,9 @@ namespace SmartManager.Migrations
                 {
                     b.HasOne("SmartManager.Models.Students.Student", "Student")
                         .WithMany("Attendances")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Student");
                 });
@@ -227,7 +232,7 @@ namespace SmartManager.Migrations
                 {
                     b.HasOne("SmartManager.Models.Groups.Group", "Group")
                         .WithMany("PaymentStatistics")
-                        .HasForeignKey("Groupid")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -238,22 +243,24 @@ namespace SmartManager.Migrations
                 {
                     b.HasOne("SmartManager.Models.Students.Student", "Student")
                         .WithMany("Payments")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Student");
                 });
 
             modelBuilder.Entity("SmartManager.Models.Students.Student", b =>
                 {
-                    b.HasOne("SmartManager.Models.Groups.Group", "Group")
+                    b.HasOne("SmartManager.Models.Groups.Group", null)
                         .WithMany("Students")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SmartManager.Models.Statistics.Statistic", null)
                         .WithMany("Students")
                         .HasForeignKey("StatisticId");
-
-                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("SmartManager.Models.Groups.Group", b =>

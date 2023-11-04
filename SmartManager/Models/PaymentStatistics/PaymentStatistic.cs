@@ -16,7 +16,8 @@ namespace SmartManager.Models.PaymentStatistics
         public Guid Id { get; set; }
         public decimal PaidPercentage { get; set; }
         public decimal NotPaidPercentage { get; set; }
-        public Guid Groupid { get; set; }
+
+        public Guid GroupId { get; set; }
         public Group Group { get; set; }
     }
 }

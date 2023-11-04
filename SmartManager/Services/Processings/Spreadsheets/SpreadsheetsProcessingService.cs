@@ -62,7 +62,8 @@ namespace SmartManager.Services.Processings.Spreadsheets
                 Surname = externalStudent.Surname,
                 Gender = externalStudent.Gender,
                 PhoneNumber = externalStudent.PhoneNumber,
-                Group = ensureGroup,
+                GroupId = ensureGroup.Id,
+                GroupName = ensureGroup.GroupName,
             };
         }
     }
