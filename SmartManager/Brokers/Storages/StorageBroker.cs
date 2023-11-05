@@ -102,7 +102,8 @@ namespace SmartManager.Brokers.Storages
         {
             string connectionString = this.configuration.GetConnectionString(name: "DefaultConnection");
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            optionsBuilder.UseSqlServer(connectionString);
+            var serverVersion = new MySqlServerVersion(new Version(10, 1, 48));
+            optionsBuilder.UseMySql(connectionString, serverVersion);
         }
 
         public override void Dispose() { }
