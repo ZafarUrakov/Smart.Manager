@@ -23,8 +23,6 @@ namespace SmartManager.Migrations
                 .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
             modelBuilder.Entity("SmartManager.Models.Attendances.Attendance", b =>
                 {
                     b.Property<Guid>("Id")
