@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartManager.Models.Students;
+using SmartManager.Services.Processings.GroupStatistics;
 using SmartManager.Services.Processings.Spreadsheets;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -9,10 +12,14 @@ namespace SmartManager.Controllers
     public class SpreadsheetController : Controller
     {
         private readonly ISpreadsheetsProcessingService spreadsheetProcessingService;
+        private readonly IGroupStatisticProccessingService groupStatisticProccessingService;
 
-        public SpreadsheetController(ISpreadsheetsProcessingService spreadsheetProcessingService)
+        public SpreadsheetController(
+            ISpreadsheetsProcessingService spreadsheetProcessingService,
+            IGroupStatisticProccessingService groupStatisticProccessingService)
         {
             this.spreadsheetProcessingService = spreadsheetProcessingService;
+            this.groupStatisticProccessingService = groupStatisticProccessingService;
         }
 
         public IActionResult Import()
@@ -24,16 +31,20 @@ namespace SmartManager.Controllers
         public async Task<IActionResult> ImportFile(IFormFile formFile)
         {
             IFormFile importFile = Request.Form.Files[0];
+            List<Student> students = new List<Student>();
 
             using (MemoryStream stream = new MemoryStream())
             {
                 importFile.CopyTo(stream);
                 stream.Position = 0;
-                await this.spreadsheetProcessingService.ProcessImportRequest(stream);
+                students = await this.spreadsheetProcessingService
+                    .ProcessImportRequest(stream);
             }
 
-            return RedirectToAction("GetStudents", "Student");
+            await this.groupStatisticProccessingService
+                .CheckStatisticOfList(students);
 
+            return RedirectToAction("GetStudents", "Student");
         }
     }
 }

@@ -36,8 +36,10 @@ namespace SmartManager.Services.Processings.Spreadsheets
             this.spreadsheetService = spreadsheetService;
         }
 
-        public async Task ProcessImportRequest(MemoryStream stream)
+        public async ValueTask<List<Student>> ProcessImportRequest(MemoryStream stream)
         {
+            List<Student> mappedStudents = new List<Student>();
+
             List<ExternalStudent> validExternalStudents =
                 this.spreadsheetService.GetExternalStudents(stream);
 
@@ -50,8 +52,11 @@ namespace SmartManager.Services.Processings.Spreadsheets
 
                 Student student = MapToStudent(externalStudent, ensureGroup);
 
+                mappedStudents.Add(student);
+
                 await studentProcessingService.AddStudentAsync(student);
             }
+            return mappedStudents;
         }
         private Student MapToStudent(ExternalStudent externalStudent, Group ensureGroup)
         {

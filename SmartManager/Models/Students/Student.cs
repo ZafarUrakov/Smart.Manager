@@ -24,8 +24,7 @@ namespace SmartManager.Models.Students
         public Guid GroupId { get; set; }
         public Group Group { get; set; }
 
-        [JsonIgnore]
-        public IEnumerable<Attendance> Attendances { get; set; }
-        public IEnumerable<Payment> Payments { get; set; }
+        public List<Attendance> Attendances { get; set; }
+        public List<Payment> Payments { get; set; }
     }
 }
