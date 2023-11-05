@@ -8,12 +8,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using SmartManager.Models.PaymentStatistics;
+using SmartManager.Models.Groups;
+using SmartManager.Models.Students;
 
 namespace SmartManager.Services.Processings.PaymentStatistics
 {
-    public interface IPaymentStatisticsProccessingServic
+    public interface IPaymentStatisticsProccessingService
     {
-        ValueTask<PaymentStatistic> AddPaymentStatisticAsync(PaymentStatistic paymentStatistic);
+        ValueTask<PaymentStatistic> AddPaymentStatisticAsync(Student student);
         ValueTask<PaymentStatistic> RetrievePaymentStatisticByIdAsync(Guid paymentStatisticId);
         IQueryable<PaymentStatistic> RetrieveAllPaymentStatistics();
         ValueTask<PaymentStatistic> ModifyPaymentStatisticAsync(PaymentStatistic paymentStatistic);
