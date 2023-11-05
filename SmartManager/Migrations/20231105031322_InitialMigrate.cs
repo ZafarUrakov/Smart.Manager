@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartManager.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAllTables : Migration
+    public partial class InitialMigrate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -109,8 +109,8 @@ namespace SmartManager.Migrations
                 {
                     table.PrimaryKey("PK_Students", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Students_Groups_GroupId",
-                        column: x => x.GroupId,
+                        name: "FK_Students_Groups_Id",
+                        column: x => x.Id,
                         principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -180,11 +180,6 @@ namespace SmartManager.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PaymentStatistics_GroupId",
                 table: "PaymentStatistics",
-                column: "GroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_GroupId",
-                table: "Students",
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(

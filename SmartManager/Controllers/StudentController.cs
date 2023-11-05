@@ -16,6 +16,21 @@ namespace SmartManager.Controllers
         {
             this.studentProcessingService = studentProcessingService;
         }
+
+        public IActionResult PostStudent()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async ValueTask<IActionResult> PostStudent(Student student)
+        {
+            
+                await this.studentProcessingService.AddStudentAsync(student);
+
+                return RedirectToAction("GetStudents");
+        }
+
         public IActionResult GetStudents()
         {
             IQueryable<Student> students = this.studentProcessingService.RetrieveAllStudents();

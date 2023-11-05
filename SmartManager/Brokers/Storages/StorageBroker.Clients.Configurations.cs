@@ -17,9 +17,10 @@ namespace SmartManager.Brokers.Storages
         //        new { student.GroupId });
 
         //    modelBuilder.Entity<Student>()
-        //        .HasOne(student => student)
+        //        .HasOne(student => student.Group)
         //        .WithMany(group => group.Students)
         //        .HasForeignKey(student => student.GroupId)
         //        .OnDelete(DeleteBehavior.NoAction);
+        //}
     }
 }

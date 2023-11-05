@@ -7,6 +7,7 @@ using EFxceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SmartManager.Models.Groups;
+using SmartManager.Models.Students;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,11 +26,20 @@ namespace SmartManager.Brokers.Storages
 
         public async ValueTask<T> InsertAsync<T>(T @object)
         {
-            var broker = new StorageBroker(this.configuration);
-            broker.Entry(@object).State = EntityState.Added;
-            await broker.SaveChangesAsync();
+            try
+            {
+                var broker = new StorageBroker(this.configuration);
+                broker.Entry(@object).State = EntityState.Added;
+                await broker.SaveChangesAsync();
 
-            return @object;
+                return @object;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public IQueryable<T> SelectAll<T>() where T : class
@@ -65,18 +75,28 @@ namespace SmartManager.Brokers.Storages
 
                 return @object;
             }
-            catch(Exception  ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Group>()
+        //        .HasMany(s => s.Students)
+        //        .WithOne(s => s.Group)
+        //        .HasForeignKey(s => s.Id)
+        //        .OnDelete(DeleteBehavior.NoAction);
 
-            //AddStudentConfigurations(modelBuilder);
-        }
+        //    modelBuilder.Entity<Student>()
+        //        .HasOne(g => g.Group)
+        //        .WithMany(s => s.Students)
+        //        .HasForeignKey(g => g.GroupId)
+        //        .OnDelete(DeleteBehavior.NoAction);
+
+
+        //}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

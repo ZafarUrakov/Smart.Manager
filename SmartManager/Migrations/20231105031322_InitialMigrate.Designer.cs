@@ -12,8 +12,8 @@ using SmartManager.Brokers.Storages;
 namespace SmartManager.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20231104193203_AddAllTables")]
-    partial class AddAllTables
+    [Migration("20231105031322_InitialMigrate")]
+    partial class InitialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,7 +176,6 @@ namespace SmartManager.Migrations
             modelBuilder.Entity("SmartManager.Models.Students.Student", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Gender")
@@ -201,8 +200,6 @@ namespace SmartManager.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
 
                     b.HasIndex("StatisticId");
 
@@ -255,15 +252,17 @@ namespace SmartManager.Migrations
 
             modelBuilder.Entity("SmartManager.Models.Students.Student", b =>
                 {
-                    b.HasOne("SmartManager.Models.Groups.Group", null)
+                    b.HasOne("SmartManager.Models.Groups.Group", "Group")
                         .WithMany("Students")
-                        .HasForeignKey("GroupId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SmartManager.Models.Statistics.Statistic", null)
                         .WithMany("Students")
                         .HasForeignKey("StatisticId");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("SmartManager.Models.Groups.Group", b =>
