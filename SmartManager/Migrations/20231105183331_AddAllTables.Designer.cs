@@ -12,7 +12,7 @@ using SmartManager.Brokers.Storages;
 namespace SmartManager.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20231104193203_AddAllTables")]
+    [Migration("20231105183331_AddAllTables")]
     partial class AddAllTables
     {
         /// <inheritdoc />
@@ -255,7 +255,7 @@ namespace SmartManager.Migrations
 
             modelBuilder.Entity("SmartManager.Models.Students.Student", b =>
                 {
-                    b.HasOne("SmartManager.Models.Groups.Group", null)
+                    b.HasOne("SmartManager.Models.Groups.Group", "Group")
                         .WithMany("Students")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,6 +264,8 @@ namespace SmartManager.Migrations
                     b.HasOne("SmartManager.Models.Statistics.Statistic", null)
                         .WithMany("Students")
                         .HasForeignKey("StatisticId");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("SmartManager.Models.Groups.Group", b =>

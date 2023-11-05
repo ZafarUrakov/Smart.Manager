@@ -33,9 +33,9 @@ namespace SmartManager.Services.Processings.Students
         {
             student.Id = Guid.NewGuid();
 
-            //var newGroup = await this.groupProcessingService.EnsureGroupExistsByName(student.Group.GroupName);
+            var newGroup = await this.groupProcessingService.EnsureGroupExistsByName(student.GroupName);
 
-            //student.Group.Id = newGroup.Id;
+            student.GroupId = newGroup.Id;
 
             return await this.studentService.AddStudentAsync(student);
         }

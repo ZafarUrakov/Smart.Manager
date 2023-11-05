@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartManager.Models.Groups;
 using SmartManager.Models.Students;
+using SmartManager.Services.Processings.Groups;
+using SmartManager.Services.Processings.GroupStatistics;
+using SmartManager.Services.Processings.Payments;
+using SmartManager.Services.Processings.PaymentStatistics;
 using SmartManager.Services.Processings.Students;
 using System;
 using System.Linq;
@@ -11,11 +14,44 @@ namespace SmartManager.Controllers
     public class StudentController : Controller
     {
         private readonly IStudentProcessingService studentProcessingService;
+        private readonly IPaymentStatisticsProccessingService paymentStatisticsProccessingService;
+        private readonly IGroupProcessingService groupProcessingService;
+        private readonly IPaymentProcessingService paymentProcessingService;
+        private readonly IGroupStatisticProccessingService groupStatisticProccessingService;
 
-        public StudentController(IStudentProcessingService studentProcessingService)
+        public StudentController(
+            IStudentProcessingService studentProcessingService,
+            IPaymentStatisticsProccessingService paymentStatisticsProccessingService,
+            IGroupProcessingService groupProcessingService,
+            IPaymentProcessingService paymentProcessingService,
+            IGroupStatisticProccessingService groupStatisticProccessingService)
         {
             this.studentProcessingService = studentProcessingService;
+            this.paymentStatisticsProccessingService = paymentStatisticsProccessingService;
+            this.groupProcessingService = groupProcessingService;
+            this.paymentProcessingService = paymentProcessingService;
+            this.groupStatisticProccessingService = groupStatisticProccessingService;
         }
+
+        public IActionResult PostStudent()
+        {
+            return View();
+        }
+
+        // post
+        [HttpPost]
+        public async ValueTask<IActionResult> PostStudent(Student student)
+        {
+            await this.studentProcessingService.AddStudentAsync(student);
+
+            await this.groupStatisticProccessingService
+                 .UpdateStatisticsByStudentAsync(student);
+
+            await this.paymentStatisticsProccessingService.AddPaymentStatisticAsync(student);
+
+            return RedirectToAction("GetStudents");
+        }
+
         public IActionResult GetStudents()
         {
             IQueryable<Student> students = this.studentProcessingService.RetrieveAllStudents();
@@ -40,7 +76,7 @@ namespace SmartManager.Controllers
 
         public IActionResult GetStudentsWithPayments(Guid groupId)
         {
-            IQueryable<Student> students = 
+            IQueryable<Student> students =
                 this.studentProcessingService.RetrieveAllStudents().Where(s => s.GroupId == groupId);
 
             return View(students);
@@ -48,7 +84,7 @@ namespace SmartManager.Controllers
 
         public async ValueTask<ActionResult> GetStudentAsync(Guid Id)
         {
-            var student = 
+            var student =
                 await this.studentProcessingService.RetrieveStudentByIdAsync(Id);
 
             return Ok(student);

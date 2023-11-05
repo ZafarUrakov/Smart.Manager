@@ -20,7 +20,6 @@ namespace SmartManager.Models.Statistics
         public int PaidStudentsCount { get; set; } 
         public double PaidStudentsPercentage { get; set; }
         public decimal TotalPayment { get; set; }
-        [JsonIgnore]
-        public IEnumerable<Student> Students { get; set; }
+        public List<Student> Students { get; set; }
     }
 }
