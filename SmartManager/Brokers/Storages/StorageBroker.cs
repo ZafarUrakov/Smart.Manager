@@ -6,6 +6,8 @@
 using EFxceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using SmartManager.Models.Groups;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -55,18 +57,31 @@ namespace SmartManager.Brokers.Storages
 
         public async ValueTask<T> DeleteAsync<T>(T @object)
         {
-            var broker = new StorageBroker(configuration);
-            broker.Entry(@object).State = EntityState.Deleted;
-            await broker.SaveChangesAsync();
+            try
+            {
+                var broker = new StorageBroker(configuration);
+                broker.Entry(@object).State = EntityState.Deleted;
+                await broker.SaveChangesAsync();
 
-            return @object;
+                return @object;
+            }
+            catch(Exception  ex)
+            {
+                throw ex;
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            //AddStudentConfigurations(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = this.configuration
-                .GetConnectionString(name: "DefaultConnection");
-
+            string connectionString = this.configuration.GetConnectionString(name: "DefaultConnection");
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             optionsBuilder.UseSqlServer(connectionString);
         }
 

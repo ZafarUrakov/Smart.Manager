@@ -1,13 +1,13 @@
-﻿@using SmartManager.Models.Students;
-@model IQueryable<Student>
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 </head>
 <body>
+    @using SmartManager.Models.Students;
+    @model IQueryable<Student>
 
     @{
-        ViewData["Title"] = "GetStudents";
+        ViewData["Title"] = "ShowStudents";
     }
     <style>
         .btn-md-custom {
@@ -22,7 +22,7 @@
                 <h2 class="text-dark">Student List</h2>
             </div>
             <div class="col-6 text-end">
-                <a asp-controller="Student" asp-action="GetStudents" class="btn btn-primary">
+                <a asp-controller="Student" asp-action="PostStudent" class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i> &nbsp; Add New Student
                 </a>
             </div>
@@ -54,8 +54,8 @@
                     <th scope="col">GivenName</th>
                     <th scope="col">Surname</th>
                     <th scope="col">PhoneNumber</th>
-                    <th scope="col">GroupName</th>
-                    @* <th scope="col">Attendance</th> *@
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,13 +69,12 @@
                             <td>@item.Surname</td>
                             <td>@item.PhoneNumber</td>
                             <td>
-                            <td>
-                                <a asp-route-Id="@item.Id" asp-action="PutStudentAsync" class="btn btn-primary btn-md-custom">
+                                <a asp-route-studentId="@item.Id" asp-action="PutStudent" class="btn btn-primary btn-md-custom">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                             </td>
                             <td>
-                                <a asp-route-Id="@item.Id" asp-action="DeleteStudentAsync" class="btn btn-danger btn-md-custom" onclick="return DeleteInput()">
+                                <a asp-route-studentId="@item.Id" asp-action="DeleteStudent" class="btn btn-danger btn-md-custom" onclick="return DeleteInput()">
                                     <i class="bi bi-x-lg"></i>
                                 </a>
                             </td>

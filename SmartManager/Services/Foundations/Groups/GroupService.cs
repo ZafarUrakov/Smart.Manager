@@ -34,9 +34,9 @@ namespace SmartManager.Services.Foundations.Groups
 
         public async ValueTask<Group> RemoveGroupAsync(Guid groupid)
         {
-            Group group = await this.storageBroker.SelectGroupByIdAsync(groupid);
+            var maybeGroup = await this.storageBroker.SelectGroupByIdAsync(groupid);
 
-            return await this.storageBroker.DeleteGroupAsync(group);
+            return await this.storageBroker.DeleteGroupAsync(maybeGroup);
         }
     }
 }

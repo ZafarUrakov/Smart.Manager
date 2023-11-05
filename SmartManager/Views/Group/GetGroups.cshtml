@@ -2,7 +2,7 @@
 @model IQueryable<Group>
 
 @{
-    ViewData["Title"] = "ShowGroups";
+    ViewData["Title"] = "GetGroups";
 }
 
 <style>
@@ -24,11 +24,38 @@
         .table td:nth-child(3) {
             width: 1%;
         }
+
+    .button-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: -10px;
+    }
+
+        .action-buttons .btn {
+            margin-left: 14px;
+            font-size: 14px;
+            padding: 0.25rem 0.5rem;
+        }
+
+            .action-buttons .btn i {
+                margin-right: 5px;
+            }
 </style>
+
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2 class="text-dark">Group</h2>
+            <h2 class="text-dark">Group List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Group" asp-action="PostGroup" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp; Add New Group
+            </a>
         </div>
     </div>
     <br />
@@ -36,12 +63,6 @@
     <div class="row pt-3">
         <div class="col-3">
             <input type="text" id="searchInput" class="form-control" placeholder="Search">
-        </div>
-        <div class="col-6 text-right">
-            <!-- Изменено на text-right -->
-            <a asp-controller="Group" asp-action="PostGroup" class="btn btn-primary ml-2">
-                <i class="bi bi-plus-circle"></i> &nbsp; Add New Group
-            </a>
         </div>
     </div>
     <br />
@@ -72,6 +93,14 @@
                                 <div class="action-buttons">
                                     <a asp-controller="Student" asp-route-groupId="@item.Id" asp-action="GetStudentsWithGroup" class="btn btn-primary btn-sm">
                                         <i class="bi bi-opencollective" alt="Open Collective Icon"></i> Students
+                                    </a>
+                                </div>
+                                <div class="action-buttons">
+                                    <a asp-controller="Group" asp-route-groupId="@item.Id" asp-action="PutGroup" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                    <a asp-route-groupId="@item.Id" asp-action="DeleteGroup" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-x-lg"></i> Delete
                                     </a>
                                 </div>
                             </div>

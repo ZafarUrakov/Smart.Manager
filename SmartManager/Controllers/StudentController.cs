@@ -26,7 +26,7 @@ namespace SmartManager.Controllers
         public IActionResult GetStudentsWithGroup(Guid groupId)
         {
             IQueryable<Student> applicants =
-                this.studentProcessingService.RetrieveAllStudents().Where(a => a.Group.Id == groupId);
+                this.studentProcessingService.RetrieveAllStudents().Where(a => a.GroupId == groupId);
 
             return View(applicants);
         }
@@ -38,21 +38,14 @@ namespace SmartManager.Controllers
             return View(students);
         }
 
-
         public IActionResult GetStudentsWithPayments(Guid groupId)
         {
             IQueryable<Student> students = 
-                this.studentProcessingService.RetrieveAllStudents().Where(s => s.Group.Id == groupId);
-
-            var group = new Group();
-
-            foreach(var student in students)
-            {
-                student.Group = group;
-            }
+                this.studentProcessingService.RetrieveAllStudents().Where(s => s.GroupId == groupId);
 
             return View(students);
         }
+
         public async ValueTask<ActionResult> GetStudentAsync(Guid Id)
         {
             var student = 
@@ -62,27 +55,27 @@ namespace SmartManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult DeleteStudentAsync(Guid studentId)
+        public async ValueTask<IActionResult> DeleteStudent(Guid studentId)
         {
             IQueryable<Student> students = this.studentProcessingService.RetrieveAllStudents();
 
             Student student = students.SingleOrDefault(a => a.Id == studentId);
 
-            this.studentProcessingService.RemoveStudentAsync(student.Id);
+            await this.studentProcessingService.RemoveStudentAsync(student.Id);
 
             return RedirectToAction("GetStudents");
         }
 
         [HttpGet]
-        public IActionResult DeleteStudentInGroup(Guid studentId)
+        public async ValueTask<IActionResult> DeleteStudentInGroup(Guid studentId)
         {
             IQueryable<Student> students = this.studentProcessingService.RetrieveAllStudents();
 
             Student student = students.SingleOrDefault(a => a.Id == studentId);
 
-            this.studentProcessingService.RemoveStudentAsync(student.Id);
+            await this.studentProcessingService.RemoveStudentAsync(student.Id);
 
-            return RedirectToAction("ShowStudentWithGroup");
+            return RedirectToAction("GetStudentsWithGroup");
         }
     }
 }

@@ -3,10 +3,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Add your head content here -->
 </head>
 <body>
-    <!-- Back arrow link -->
     <a href="javascript:history.back()" class="btn btn-secondary">
         <i class="bi bi-arrow-left"></i> Back
     </a>
@@ -53,10 +51,7 @@
                     <th scope="col">#</th>
                     <th scope="col">FirstName</th>
                     <th scope="col">LastName</th>
-                    <th scope="col">Email</th>
                     <th scope="col">PhoneNumber</th>
-                    <th scope="col">GroupName</th>
-                    <th scope="col">CreatedDate</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
                 </tr>
@@ -72,12 +67,12 @@
                             <td>@item.Surname</td>
                             <td>@item.PhoneNumber</td>
                             <td>
-                                <a asp-route-Id="@item.Id" asp-action="PutstudentInGroupAsync" class="btn btn-primary btn-md-custom">
+                                <a asp-route-studentId="@item.Id" asp-action="PutstudentInGroupAsync" class="btn btn-primary btn-md-custom">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                             </td>
                             <td>
-                                <a asp-route-Id="@item.Id" asp-action="DeleteStudentAsync" class="btn btn-danger btn-md-custom" onclick="return DeleteInput()">
+                                <a asp-route-studentId="@item.Id" asp-action="DeleteStudentInGroup" class="btn btn-danger btn-md-custom" onclick="return DeleteInput()">
                                     <i class="bi bi-x-lg"></i>
                                 </a>
                             </td>
