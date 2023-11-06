@@ -9,6 +9,9 @@ using SmartManager.Models.Groups;
 using SmartManager.Models.Students;
 using SmartManager.Services.Foundations.Spreadsheets;
 using SmartManager.Services.Processings.Groups;
+using SmartManager.Services.Processings.GroupsStatistics;
+using SmartManager.Services.Processings.Payments;
+using SmartManager.Services.Processings.PaymentStatistics;
 using SmartManager.Services.Processings.Students;
 using System;
 using System.Collections.Generic;
@@ -22,18 +25,21 @@ namespace SmartManager.Services.Processings.Spreadsheets
         private readonly ISpreadsheetService spreadsheetService;
         private readonly IStudentProcessingService studentProcessingService;
         private readonly IGroupProcessingService groupProcessingService;
-        private readonly ILoggingBroker loggingBroker;
+        private readonly IGroupsStatisticProccessingService groupsStatisticProccessingService;
+        private readonly IPaymentStatisticsProccessingService paymentStatisticsProccessingService;
 
         public SpreadsheetsProcessingService(
             IStudentProcessingService studentProcessingService,
             IGroupProcessingService groupProcessingService,
-            ILoggingBroker loggingBroker,
-            ISpreadsheetService spreadsheetService)
+            ISpreadsheetService spreadsheetService,
+            IGroupsStatisticProccessingService groupsStatisticProccessingService,
+            IPaymentStatisticsProccessingService paymentStatisticsProccessingService)
         {
             this.studentProcessingService = studentProcessingService;
             this.groupProcessingService = groupProcessingService;
-            this.loggingBroker = loggingBroker;
             this.spreadsheetService = spreadsheetService;
+            this.groupsStatisticProccessingService = groupsStatisticProccessingService;
+            this.paymentStatisticsProccessingService = paymentStatisticsProccessingService;
         }
 
         public async ValueTask<List<Student>> ProcessImportRequest(MemoryStream stream)
@@ -50,11 +56,16 @@ namespace SmartManager.Services.Processings.Spreadsheets
                     await groupProcessingService
                     .EnsureGroupExistsByName(externalStudent.GroupName);
 
+
                 Student student = MapToStudent(externalStudent, ensureGroup);
 
                 mappedStudents.Add(student);
 
                 await studentProcessingService.AddStudentAsync(student);
+
+                await this.paymentStatisticsProccessingService.AddPaymentStatisticAsync(student);
+                await this.groupsStatisticProccessingService.AddGroupsStatisticAsync(ensureGroup);
+                await this.groupsStatisticProccessingService.AddGroupsStatisticsWithStudentsAsync(student);
             }
             return mappedStudents;
         }

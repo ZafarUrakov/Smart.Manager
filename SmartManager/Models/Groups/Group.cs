@@ -16,5 +16,6 @@ namespace SmartManager.Models.Groups
         public string GroupName { get; set; }
         public List<Student> Students { get; set; }
         public List<PaymentStatistic> PaymentStatistics { get; set; }
+        public List<Models.GroupsStatistics.GroupsStatistic> GroupsStatistics { get; set; }
     }
 }
