@@ -3,13 +3,12 @@
 // Managre quickly and easy
 //===========================
 
-using System;
-using System.Collections.Generic;
 using SmartManager.Models.Groups;
+using System;
 
-namespace SmartManager.Models.GroupStatistics
+namespace SmartManager.Models.StudentsStatistic
 {
-    public class GroupStatistic
+    public class StudentsStatistic
     {
         public Guid Id { get; set; }
         public int MaleStudents { get; set; }

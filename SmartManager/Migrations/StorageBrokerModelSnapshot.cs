@@ -58,28 +58,6 @@ namespace SmartManager.Migrations
                     b.ToTable("Bots");
                 });
 
-            modelBuilder.Entity("SmartManager.Models.GroupStatistics.GroupStatistic", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("FemaleStudents")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("MaleStudents")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("GroupStatistics");
-                });
-
             modelBuilder.Entity("SmartManager.Models.Groups.Group", b =>
                 {
                     b.Property<Guid>("Id")
@@ -92,6 +70,23 @@ namespace SmartManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("SmartManager.Models.GroupsStatistics.GroupsStatistic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Percentage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GroupsStatistics");
                 });
 
             modelBuilder.Entity("SmartManager.Models.PaymentStatistics.PaymentStatistic", b =>
@@ -150,6 +145,12 @@ namespace SmartManager.Migrations
                     b.Property<int>("FemaleStudentsCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("GroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("GroupPercentage")
+                        .HasColumnType("float");
+
                     b.Property<int>("MaleStudentsCount")
                         .HasColumnType("int");
 
@@ -206,6 +207,28 @@ namespace SmartManager.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("SmartManager.Models.StudentsStatistic.StudentsStatistic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("FemaleStudents")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaleStudents")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("StudentsStatistics");
+                });
+
             modelBuilder.Entity("SmartManager.Models.Attendances.Attendance", b =>
                 {
                     b.HasOne("SmartManager.Models.Students.Student", "Student")
@@ -215,17 +238,6 @@ namespace SmartManager.Migrations
                         .IsRequired();
 
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("SmartManager.Models.GroupStatistics.GroupStatistic", b =>
-                {
-                    b.HasOne("SmartManager.Models.Groups.Group", "Group")
-                        .WithMany("GroupStatistics")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("SmartManager.Models.PaymentStatistics.PaymentStatistic", b =>
@@ -265,10 +277,19 @@ namespace SmartManager.Migrations
                     b.Navigation("Group");
                 });
 
+            modelBuilder.Entity("SmartManager.Models.StudentsStatistic.StudentsStatistic", b =>
+                {
+                    b.HasOne("SmartManager.Models.Groups.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("SmartManager.Models.Groups.Group", b =>
                 {
-                    b.Navigation("GroupStatistics");
-
                     b.Navigation("PaymentStatistics");
 
                     b.Navigation("Students");

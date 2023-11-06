@@ -4,12 +4,12 @@
 //===========================
 
 using SmartManager.Brokers.Loggings;
+using SmartManager.Models.Students;
+using SmartManager.Services.Foundations.Students;
 using SmartManager.Services.Processings.Groups;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
-using SmartManager.Services.Foundations.Students;
-using SmartManager.Models.Students;
 
 namespace SmartManager.Services.Processings.Students
 {

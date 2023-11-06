@@ -3,7 +3,6 @@
 // Managre quickly and easy
 //===========================
 
-using SmartManager.Models.Groups;
 using SmartManager.Models.Students;
 using System;
 

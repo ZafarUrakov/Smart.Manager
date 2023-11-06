@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SmartManager.Brokers.Storages;
+using SmartManager.Models.Attendances;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SmartManager.Brokers.Storages;
-using SmartManager.Models.Attendances;
 
 namespace SmartManager.Services.Foundations.Attendances
 {

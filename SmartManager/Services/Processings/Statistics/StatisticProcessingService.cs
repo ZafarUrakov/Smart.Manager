@@ -5,13 +5,13 @@
 
 using SmartManager.Models.Statistics;
 using SmartManager.Services.Foundations.Statistics;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 
 namespace SmartManager.Services.Processings.Statistics
 {
-    public class StatisticProcessingService :IStatisticProcessingService
+    public class StatisticProcessingService : IStatisticProcessingService
     {
         private readonly IStatisticService statisticService;
 

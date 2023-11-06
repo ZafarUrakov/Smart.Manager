@@ -6,8 +6,6 @@
 using EFxceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using SmartManager.Models.Groups;
-using SmartManager.Models.Students;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +37,7 @@ namespace SmartManager.Brokers.Storages
 
                 throw;
             }
-            
+
         }
         public IQueryable<T> SelectAll<T>() where T : class
         {

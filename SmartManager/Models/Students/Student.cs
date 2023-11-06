@@ -8,7 +8,6 @@ using SmartManager.Models.Groups;
 using SmartManager.Models.Payments;
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace SmartManager.Models.Students
 {

@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using System;
-using SmartManager.Models.Attendances;
+﻿using SmartManager.Models.Attendances;
 using SmartManager.Services.Foundations.Attendances;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SmartManager.Services.Processings.Attendances
 {

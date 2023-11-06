@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartManager.Models.Students;
-using SmartManager.Services.Processings.GroupStatistics;
 using SmartManager.Services.Processings.Spreadsheets;
+using SmartManager.Services.Processings.StudentsStatistics;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -12,11 +12,11 @@ namespace SmartManager.Controllers
     public class SpreadsheetController : Controller
     {
         private readonly ISpreadsheetsProcessingService spreadsheetProcessingService;
-        private readonly IGroupStatisticProccessingService groupStatisticProccessingService;
+        private readonly IStudentsStatisticProccessingService groupStatisticProccessingService;
 
         public SpreadsheetController(
             ISpreadsheetsProcessingService spreadsheetProcessingService,
-            IGroupStatisticProccessingService groupStatisticProccessingService)
+            IStudentsStatisticProccessingService groupStatisticProccessingService)
         {
             this.spreadsheetProcessingService = spreadsheetProcessingService;
             this.groupStatisticProccessingService = groupStatisticProccessingService;
