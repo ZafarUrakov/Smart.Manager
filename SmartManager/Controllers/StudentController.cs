@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartManager.Models.Students;
 using SmartManager.Services.Processings.Groups;
+using SmartManager.Services.Processings.GroupsStatistics;
 using SmartManager.Services.Processings.Payments;
 using SmartManager.Services.Processings.PaymentStatistics;
 using SmartManager.Services.Processings.Students;
@@ -18,19 +19,22 @@ namespace SmartManager.Controllers
         private readonly IGroupProcessingService groupProcessingService;
         private readonly IPaymentProcessingService paymentProcessingService;
         private readonly IStudentsStatisticProccessingService groupStatisticProccessingService;
+        private readonly IGroupsStatisticProccessingService groupsStatisticProccessingService;
 
         public StudentController(
             IStudentProcessingService studentProcessingService,
             IPaymentStatisticsProccessingService paymentStatisticsProccessingService,
             IGroupProcessingService groupProcessingService,
             IPaymentProcessingService paymentProcessingService,
-            IStudentsStatisticProccessingService groupStatisticProccessingService)
+            IStudentsStatisticProccessingService groupStatisticProccessingService,
+            IGroupsStatisticProccessingService groupsStatisticProccessingService)
         {
             this.studentProcessingService = studentProcessingService;
             this.paymentStatisticsProccessingService = paymentStatisticsProccessingService;
             this.groupProcessingService = groupProcessingService;
             this.paymentProcessingService = paymentProcessingService;
             this.groupStatisticProccessingService = groupStatisticProccessingService;
+            this.groupsStatisticProccessingService = groupsStatisticProccessingService;
         }
 
         public IActionResult PostStudent()
@@ -38,7 +42,6 @@ namespace SmartManager.Controllers
             return View();
         }
 
-        // post
         [HttpPost]
         public async ValueTask<IActionResult> PostStudent(Student student)
         {
@@ -48,6 +51,8 @@ namespace SmartManager.Controllers
                  .UpdateStatisticsByStudentAsync(student);
 
             await this.paymentStatisticsProccessingService.AddPaymentStatisticAsync(student);
+
+            await this.groupsStatisticProccessingService.AddGroupsStatisticsWithStudentsAsync(student);
 
             return RedirectToAction("GetStudents");
         }

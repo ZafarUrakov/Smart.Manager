@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SmartManager.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAllMigration : Migration
+    public partial class AddAllTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,8 @@ namespace SmartManager.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GroupName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GroupPercentage = table.Column<double>(type: "float", nullable: false),
                     MaleStudentsCount = table.Column<int>(type: "int", nullable: false),
                     FemaleStudentsCount = table.Column<int>(type: "int", nullable: false),
                     TotalStudentsCount = table.Column<int>(type: "int", nullable: false),
@@ -53,19 +55,19 @@ namespace SmartManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupStatistics",
+                name: "GroupsStatistics",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MaleStudents = table.Column<int>(type: "int", nullable: false),
-                    FemaleStudents = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Percentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupStatistics", x => x.Id);
+                    table.PrimaryKey("PK_GroupsStatistics", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GroupStatistics_Groups_GroupId",
+                        name: "FK_GroupsStatistics_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id",
@@ -86,6 +88,26 @@ namespace SmartManager.Migrations
                     table.PrimaryKey("PK_PaymentStatistics", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PaymentStatistics_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudentsStatistics",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MaleStudents = table.Column<int>(type: "int", nullable: false),
+                    FemaleStudents = table.Column<int>(type: "int", nullable: false),
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentsStatistics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StudentsStatistics_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id",
@@ -168,8 +190,8 @@ namespace SmartManager.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupStatistics_GroupId",
-                table: "GroupStatistics",
+                name: "IX_GroupsStatistics_GroupId",
+                table: "GroupsStatistics",
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
@@ -191,6 +213,11 @@ namespace SmartManager.Migrations
                 name: "IX_Students_StatisticId",
                 table: "Students",
                 column: "StatisticId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentsStatistics_GroupId",
+                table: "StudentsStatistics",
+                column: "GroupId");
         }
 
         /// <inheritdoc />
@@ -203,13 +230,16 @@ namespace SmartManager.Migrations
                 name: "Bots");
 
             migrationBuilder.DropTable(
-                name: "GroupStatistics");
+                name: "GroupsStatistics");
 
             migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "PaymentStatistics");
+
+            migrationBuilder.DropTable(
+                name: "StudentsStatistics");
 
             migrationBuilder.DropTable(
                 name: "Students");

@@ -78,6 +78,9 @@ namespace SmartManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -85,6 +88,8 @@ namespace SmartManager.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
 
                     b.ToTable("GroupsStatistics");
                 });
@@ -240,6 +245,17 @@ namespace SmartManager.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("SmartManager.Models.GroupsStatistics.GroupsStatistic", b =>
+                {
+                    b.HasOne("SmartManager.Models.Groups.Group", "Group")
+                        .WithMany("GroupsStatistics")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("SmartManager.Models.PaymentStatistics.PaymentStatistic", b =>
                 {
                     b.HasOne("SmartManager.Models.Groups.Group", "Group")
@@ -290,6 +306,8 @@ namespace SmartManager.Migrations
 
             modelBuilder.Entity("SmartManager.Models.Groups.Group", b =>
                 {
+                    b.Navigation("GroupsStatistics");
+
                     b.Navigation("PaymentStatistics");
 
                     b.Navigation("Students");

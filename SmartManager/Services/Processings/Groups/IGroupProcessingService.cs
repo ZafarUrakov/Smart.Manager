@@ -13,6 +13,7 @@ namespace SmartManager.Services.Processings.Groups
     public interface IGroupProcessingService
     {
         ValueTask<Group> EnsureGroupExistsByName(string groupName);
+        ValueTask<Group> EnsureGroupExistsByNameForAdd(string groupName);
         ValueTask<Group> AddGroupAsync(Group group);
         ValueTask<Group> RetrieveGroupByIdAsync(Guid groupid);
         IQueryable<Group> RetrieveAllGroups();

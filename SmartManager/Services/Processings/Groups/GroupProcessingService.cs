@@ -29,6 +29,15 @@ namespace SmartManager.Services.Processings.Groups
                 : maybeGroup;
         }
 
+        public async ValueTask<Group> EnsureGroupExistsByNameForAdd(string groupName)
+        {
+            var maybeGroup = RetriveGroupByName(groupName);
+
+            return maybeGroup is null
+                ? await AddGroupAsync(groupName)
+                : null;
+        }
+
         public async ValueTask<Group> AddGroupAsync(Group group) =>
            await this.groupService.AddGroupAsync(group);
 

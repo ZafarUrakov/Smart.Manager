@@ -10,6 +10,7 @@ using SmartManager.Models.Students;
 using SmartManager.Services.Foundations.PaymentStatistics;
 using SmartManager.Services.Processings.Groups;
 using SmartManager.Services.Processings.Payments;
+using SmartManager.Services.Processings.Students;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,22 +22,21 @@ namespace SmartManager.Services.Processings.PaymentStatistics
         private readonly IPaymentStatisticService paymentStatisticService;
         private readonly IGroupProcessingService groupProcessingService;
         private readonly IPaymentProcessingService paymentProcessingService;
-        private readonly IStorageBroker storageBroker;
-
+        private readonly IStudentProcessingService studentProcessingService;
         public PaymentStatisticsProccessingService(
             IPaymentStatisticService PaymentStatisticService,
             IGroupProcessingService groupProcessingService,
             IPaymentProcessingService paymentProcessingService,
-            IStorageBroker storageBroker)
+            IStudentProcessingService studentProcessingService)
         {
             this.paymentStatisticService = PaymentStatisticService;
             this.groupProcessingService = groupProcessingService;
             this.paymentProcessingService = paymentProcessingService;
-            this.storageBroker = storageBroker;
+            this.studentProcessingService = studentProcessingService;
         }
         public async ValueTask<PaymentStatistic> AddPaymentStatisticAsync(Student student)
         {
-            var students = this.storageBroker.SelectAllStudents();
+            var students = this.studentProcessingService.RetrieveAllStudents();
             var group = await this.groupProcessingService.RetrieveGroupByIdAsync(student.GroupId);
 
             int totalStudents = 0;
