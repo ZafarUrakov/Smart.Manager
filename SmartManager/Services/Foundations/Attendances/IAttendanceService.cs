@@ -3,10 +3,10 @@
 // Managre quickly and easy
 //===========================
 
+using SmartManager.Models.Attendances;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
-using SmartManager.Models.Attendances;
 
 namespace SmartManager.Services.Foundations.Attendances
 {

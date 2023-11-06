@@ -5,9 +5,9 @@
 
 using SmartManager.Models.Payments;
 using SmartManager.Services.Foundations.Payments;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 
 namespace SmartManager.Services.Processings.Payments
 {

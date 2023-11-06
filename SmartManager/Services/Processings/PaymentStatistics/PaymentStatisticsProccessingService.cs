@@ -3,13 +3,13 @@
 // Managre quickly and easy
 //===========================
 
+using SmartManager.Brokers.Storages;
 using SmartManager.Models.Groups;
 using SmartManager.Models.PaymentStatistics;
 using SmartManager.Models.Students;
 using SmartManager.Services.Foundations.PaymentStatistics;
 using SmartManager.Services.Processings.Groups;
 using SmartManager.Services.Processings.Payments;
-using SmartManager.Services.Processings.Students;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,23 +20,24 @@ namespace SmartManager.Services.Processings.PaymentStatistics
     {
         private readonly IPaymentStatisticService paymentStatisticService;
         private readonly IGroupProcessingService groupProcessingService;
-        private readonly IStudentProcessingService studentProcessingService;
         private readonly IPaymentProcessingService paymentProcessingService;
+        private readonly IStorageBroker storageBroker;
 
         public PaymentStatisticsProccessingService(
             IPaymentStatisticService PaymentStatisticService,
             IGroupProcessingService groupProcessingService,
-            IPaymentProcessingService paymentProcessingService)
+            IPaymentProcessingService paymentProcessingService,
+            IStorageBroker storageBroker)
         {
             this.paymentStatisticService = PaymentStatisticService;
             this.groupProcessingService = groupProcessingService;
             this.paymentProcessingService = paymentProcessingService;
+            this.storageBroker = storageBroker;
         }
         public async ValueTask<PaymentStatistic> AddPaymentStatisticAsync(Student student)
         {
+            var students = this.storageBroker.SelectAllStudents();
             var group = await this.groupProcessingService.RetrieveGroupByIdAsync(student.GroupId);
-
-            IQueryable<Student> students = this.studentProcessingService.RetrieveAllStudents();
 
             int totalStudents = 0;
             int paids = 0;
@@ -50,8 +51,8 @@ namespace SmartManager.Services.Processings.PaymentStatistics
             {
                 PaymentStatistic newPaymentStatistic = AddPaymentStatisticIfNotFound(group);
 
-                paymentStatistic.PaidPercentage = (paids / totalStudents) * 100;
-                paymentStatistic.NotPaidPercentage = 100 - paymentStatistic.PaidPercentage;
+                newPaymentStatistic.PaidPercentage = (paids / totalStudents) * 100;
+                newPaymentStatistic.NotPaidPercentage = 100 - newPaymentStatistic.PaidPercentage;
 
                 return await this.paymentStatisticService.AddPaymentStatisticAsync(newPaymentStatistic);
             }

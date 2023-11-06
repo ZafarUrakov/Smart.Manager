@@ -5,9 +5,9 @@
 
 using SmartManager.Brokers.Storages;
 using SmartManager.Models.Statistics;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 
 namespace SmartManager.Services.Foundations.Statistics
 {

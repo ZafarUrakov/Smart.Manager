@@ -3,14 +3,13 @@
 // Managre quickly and easy
 //===========================
 
+using Microsoft.AspNetCore.Mvc;
+using SmartManager.Models.Groups;
+using SmartManager.Services.Processings.Groups;
+using SmartManager.Services.Processings.Students;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using SmartManager.Models.Groups;
-using SmartManager.Models.Students;
-using SmartManager.Services.Processings.Groups;
-using SmartManager.Services.Processings.Students;
 
 namespace SmartManager.Controllers
 {

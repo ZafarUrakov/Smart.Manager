@@ -1,7 +1,7 @@
 ﻿using SmartManager.Models.Statistics;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 
 namespace SmartManager.Brokers.Storages
 {

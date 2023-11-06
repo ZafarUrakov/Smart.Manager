@@ -4,11 +4,10 @@
 //===========================
 
 using Microsoft.EntityFrameworkCore;
-using SmartManager.Models.Payments;
+using SmartManager.Models.PaymentStatistics;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
-using SmartManager.Models.PaymentStatistics;
 
 namespace SmartManager.Brokers.Storages
 {

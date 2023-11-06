@@ -14,20 +14,20 @@ using SmartManager.Brokers.Spreadsheets;
 using SmartManager.Brokers.Storages;
 using SmartManager.Services.Foundations.Attendances;
 using SmartManager.Services.Foundations.Groups;
-using SmartManager.Services.Foundations.GroupStatistics;
 using SmartManager.Services.Foundations.Payments;
 using SmartManager.Services.Foundations.PaymentStatistics;
 using SmartManager.Services.Foundations.Spreadsheets;
 using SmartManager.Services.Foundations.Statistics;
 using SmartManager.Services.Foundations.Students;
+using SmartManager.Services.Foundations.StudentsStatistics;
 using SmartManager.Services.Processings.Attendances;
 using SmartManager.Services.Processings.Groups;
-using SmartManager.Services.Processings.GroupStatistics;
 using SmartManager.Services.Processings.Payments;
 using SmartManager.Services.Processings.PaymentStatistics;
 using SmartManager.Services.Processings.Spreadsheets;
 using SmartManager.Services.Processings.Statistics;
 using SmartManager.Services.Processings.Students;
+using SmartManager.Services.Processings.StudentsStatistics;
 
 namespace SmartManager
 {
@@ -52,7 +52,7 @@ namespace SmartManager
             services.AddTransient<IStatisticService, StatisticService>();
             services.AddTransient<ISpreadsheetService, SpreadsheetService>();
             services.AddTransient<IPaymentStatisticService, PaymentStatisticService>();
-            services.AddTransient<IGroupStatisticService, GroupStatisticService>();
+            services.AddTransient<IStudentsStatisticService, StudentsStatisticService>();
             services.AddTransient<IStudentProcessingService, StudentProcessingService>();
             services.AddTransient<IAttendanceProcessingService, AttendanceProcessingService>();
             services.AddTransient<IGroupProcessingService, GroupProcessingService>();
@@ -60,7 +60,7 @@ namespace SmartManager
             services.AddTransient<IStatisticProcessingService, StatisticProcessingService>();
             services.AddScoped<ISpreadsheetsProcessingService, SpreadsheetsProcessingService>();
             services.AddTransient<IPaymentStatisticsProccessingService, PaymentStatisticsProccessingService>();
-            services.AddTransient<IGroupStatisticProccessingService, GroupStatisticProccessingService>();
+            services.AddTransient<IStudentsStatisticProccessingService, StudentsStatisticProccessingService>();
 
 
 

@@ -6,8 +6,6 @@
 using EFxceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using SmartManager.Models.Groups;
-using SmartManager.Models.Students;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,9 +37,8 @@ namespace SmartManager.Brokers.Storages
 
                 throw;
             }
-            
-        }
 
+        }
         public IQueryable<T> SelectAll<T>() where T : class
         {
             var broker = new StorageBroker(configuration);
@@ -81,29 +78,11 @@ namespace SmartManager.Brokers.Storages
             }
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Group>()
-        //        .HasMany(s => s.Students)
-        //        .WithOne(s => s.Group)
-        //        .HasForeignKey(s => s.Id)
-        //        .OnDelete(DeleteBehavior.NoAction);
-
-        //    modelBuilder.Entity<Student>()
-        //        .HasOne(g => g.Group)
-        //        .WithMany(s => s.Students)
-        //        .HasForeignKey(g => g.GroupId)
-        //        .OnDelete(DeleteBehavior.NoAction);
-
-
-        //}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = this.configuration.GetConnectionString(name: "DefaultConnection");
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            var serverVersion = new MySqlServerVersion(new Version(10, 1, 48));
-            optionsBuilder.UseMySql(connectionString, serverVersion);
+            optionsBuilder.UseSqlServer(connectionString);
         }
 
         public override void Dispose() { }

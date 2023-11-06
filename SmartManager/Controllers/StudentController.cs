@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartManager.Models.Students;
 using SmartManager.Services.Processings.Groups;
-using SmartManager.Services.Processings.GroupStatistics;
 using SmartManager.Services.Processings.Payments;
 using SmartManager.Services.Processings.PaymentStatistics;
 using SmartManager.Services.Processings.Students;
+using SmartManager.Services.Processings.StudentsStatistics;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,14 +17,14 @@ namespace SmartManager.Controllers
         private readonly IPaymentStatisticsProccessingService paymentStatisticsProccessingService;
         private readonly IGroupProcessingService groupProcessingService;
         private readonly IPaymentProcessingService paymentProcessingService;
-        private readonly IGroupStatisticProccessingService groupStatisticProccessingService;
+        private readonly IStudentsStatisticProccessingService groupStatisticProccessingService;
 
         public StudentController(
             IStudentProcessingService studentProcessingService,
             IPaymentStatisticsProccessingService paymentStatisticsProccessingService,
             IGroupProcessingService groupProcessingService,
             IPaymentProcessingService paymentProcessingService,
-            IGroupStatisticProccessingService groupStatisticProccessingService)
+            IStudentsStatisticProccessingService groupStatisticProccessingService)
         {
             this.studentProcessingService = studentProcessingService;
             this.paymentStatisticsProccessingService = paymentStatisticsProccessingService;

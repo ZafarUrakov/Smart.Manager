@@ -31,13 +31,13 @@ namespace SmartManager.Controllers
             var student =
                 await this.studentProcessingService.RetrieveStudentByIdAsync(studentId);
 
-                var attendance = new Attendance
-                {
-                    Id = Guid.NewGuid(),
-                    Student = student,
-                    Date = DateTimeOffset.Now,
-                    IsPresent = isPresent
-                };
+            var attendance = new Attendance
+            {
+                Id = Guid.NewGuid(),
+                Student = student,
+                Date = DateTimeOffset.Now,
+                IsPresent = isPresent
+            };
 
 
             await this.attendanceProcessingService.AddAttendanceAsync(attendance);
