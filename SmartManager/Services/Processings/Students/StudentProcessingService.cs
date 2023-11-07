@@ -33,6 +33,7 @@ namespace SmartManager.Services.Processings.Students
         {
             student.Id = Guid.NewGuid();
 
+
             var newGroup = await this.groupProcessingService.EnsureGroupExistsByName(student.GroupName);
 
             student.Group = newGroup;

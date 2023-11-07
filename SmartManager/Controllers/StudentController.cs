@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartManager.Models.Students;
-using SmartManager.Services.Processings.Groups;
 using SmartManager.Services.Processings.GroupsStatistics;
-using SmartManager.Services.Processings.Payments;
 using SmartManager.Services.Processings.PaymentStatistics;
+using SmartManager.Services.Processings.Statistics;
 using SmartManager.Services.Processings.Students;
 using SmartManager.Services.Processings.StudentsStatistics;
 using System;
@@ -16,25 +15,22 @@ namespace SmartManager.Controllers
     {
         private readonly IStudentProcessingService studentProcessingService;
         private readonly IPaymentStatisticsProccessingService paymentStatisticsProccessingService;
-        private readonly IGroupProcessingService groupProcessingService;
-        private readonly IPaymentProcessingService paymentProcessingService;
         private readonly IStudentsStatisticProccessingService groupStatisticProccessingService;
         private readonly IGroupsStatisticProccessingService groupsStatisticProccessingService;
+        private readonly IStatisticProcessingService statisticProcessingService;
 
         public StudentController(
             IStudentProcessingService studentProcessingService,
             IPaymentStatisticsProccessingService paymentStatisticsProccessingService,
-            IGroupProcessingService groupProcessingService,
-            IPaymentProcessingService paymentProcessingService,
             IStudentsStatisticProccessingService groupStatisticProccessingService,
-            IGroupsStatisticProccessingService groupsStatisticProccessingService)
+            IGroupsStatisticProccessingService groupsStatisticProccessingService,
+            IStatisticProcessingService statisticProcessingService)
         {
             this.studentProcessingService = studentProcessingService;
             this.paymentStatisticsProccessingService = paymentStatisticsProccessingService;
-            this.groupProcessingService = groupProcessingService;
-            this.paymentProcessingService = paymentProcessingService;
             this.groupStatisticProccessingService = groupStatisticProccessingService;
             this.groupsStatisticProccessingService = groupsStatisticProccessingService;
+            this.statisticProcessingService = statisticProcessingService;
         }
 
         public IActionResult PostStudent()
@@ -45,7 +41,7 @@ namespace SmartManager.Controllers
         [HttpPost]
         public async ValueTask<IActionResult> PostStudent(Student student)
         {
-            await this.studentProcessingService.AddStudentAsync(student);
+            var newStudent = await this.studentProcessingService.AddStudentAsync(student);
 
             await this.groupStatisticProccessingService
                  .UpdateStatisticsByStudentAsync(student);
@@ -53,6 +49,10 @@ namespace SmartManager.Controllers
             await this.paymentStatisticsProccessingService.AddPaymentStatisticAsync(student);
 
             await this.groupsStatisticProccessingService.AddGroupsStatisticsWithStudentsAsync(student);
+
+            await this.statisticProcessingService.AddOrUpdateStatisticAsync();
+
+            this.groupsStatisticProccessingService.ModifyGroupsStatisticAsync(newStudent);
 
             return RedirectToAction("GetStudents");
         }
@@ -66,10 +66,10 @@ namespace SmartManager.Controllers
 
         public IActionResult GetStudentsWithGroup(Guid groupId)
         {
-            IQueryable<Student> applicants =
+            IQueryable<Student> students =
                 this.studentProcessingService.RetrieveAllStudents().Where(a => a.GroupId == groupId);
 
-            return View(applicants);
+            return View(students);
         }
 
         public IActionResult GetStudentsWithAttendances()
@@ -96,27 +96,41 @@ namespace SmartManager.Controllers
         }
 
         [HttpGet]
-        public async ValueTask<IActionResult> DeleteStudent(Guid studentId)
+        public IActionResult PutStudent(Guid studentId)
         {
             IQueryable<Student> students = this.studentProcessingService.RetrieveAllStudents();
 
-            Student student = students.SingleOrDefault(a => a.Id == studentId);
+            Student student = students.FirstOrDefault(a => a.Id == studentId);
 
-            await this.studentProcessingService.RemoveStudentAsync(student.Id);
+            return View(student);
+        }
+
+        [HttpPost]
+        public async ValueTask<IActionResult> PutStudent(Student student)
+        {
+            var updatedStudent = await studentProcessingService.ModifyStudentAsync(student);
+
+            this.groupsStatisticProccessingService.ModifyGroupsStatisticAsync(updatedStudent);
+
+            await this.statisticProcessingService.AddOrUpdateStatisticAsync();
 
             return RedirectToAction("GetStudents");
         }
 
         [HttpGet]
-        public async ValueTask<IActionResult> DeleteStudentInGroup(Guid studentId)
+        public async ValueTask<IActionResult> DeleteStudent(Guid studentId)
         {
-            IQueryable<Student> students = this.studentProcessingService.RetrieveAllStudents();
+            var students = this.studentProcessingService.RetrieveAllStudents();
 
-            Student student = students.SingleOrDefault(a => a.Id == studentId);
+            var student = students.SingleOrDefault(a => a.Id == studentId);
 
-            await this.studentProcessingService.RemoveStudentAsync(student.Id);
+            var removedStudent = await this.studentProcessingService.RemoveStudentAsync(student.Id);
 
-            return RedirectToAction("GetStudentsWithGroup");
+            this.groupsStatisticProccessingService.ModifyGroupsStatisticAsync(removedStudent);
+
+            await this.statisticProcessingService.AddOrUpdateStatisticAsync();
+
+            return RedirectToAction("GetStudents");
         }
     }
 }

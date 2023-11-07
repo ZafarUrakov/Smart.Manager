@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartManager.Brokers.Storages;
 
@@ -11,9 +12,11 @@ using SmartManager.Brokers.Storages;
 namespace SmartManager.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    partial class StorageBrokerModelSnapshot : ModelSnapshot
+    [Migration("20231107073453_UpdateStatistics")]
+    partial class UpdateStatistics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,22 +156,16 @@ namespace SmartManager.Migrations
                     b.Property<int>("MaleStudentsCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("OtherStudentsCount")
-                        .HasColumnType("int");
-
                     b.Property<int>("PaidStudentsCount")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("PaidStudentsPercentage")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("PaidStudentsPercentage")
+                        .HasColumnType("float");
 
                     b.Property<decimal>("TotalPayment")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("TotalStudentsCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UnknownStudentsCount")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

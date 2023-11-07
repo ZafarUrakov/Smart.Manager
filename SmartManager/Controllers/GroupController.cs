@@ -44,7 +44,7 @@ namespace SmartManager.Controllers
                 return View(group);
             }
 
-            await this.groupsStatisticProccessingService.AddGroupsStatisticAsync(group);
+            //await this.groupsStatisticProccessingService.AddGroupsStatisticAsync(group);
 
             return RedirectToAction("GetGroups");
         }
