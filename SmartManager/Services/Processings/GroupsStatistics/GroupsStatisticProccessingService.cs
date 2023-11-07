@@ -7,10 +7,10 @@ using SmartManager.Models.Groups;
 using SmartManager.Models.GroupsStatistics;
 using SmartManager.Models.Students;
 using SmartManager.Services.Foundations.GroupsStatistics;
+using SmartManager.Services.Processings.Groups;
 using SmartManager.Services.Processings.Students;
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace SmartManager.Services.Processings.GroupsStatistics
@@ -19,13 +19,16 @@ namespace SmartManager.Services.Processings.GroupsStatistics
     {
         private readonly IGroupsStatisticService groupsStatisticService;
         private readonly IStudentProcessingService studentProcessingService;
+        private readonly IGroupProcessingService groupProcessingService;
 
         public GroupsStatisticProccessingService(
             IGroupsStatisticService groupsStatisticService,
-            IStudentProcessingService studentProcessingService)
+            IStudentProcessingService studentProcessingService,
+            IGroupProcessingService groupProcessingService)
         {
             this.groupsStatisticService = groupsStatisticService;
             this.studentProcessingService = studentProcessingService;
+            this.groupProcessingService = groupProcessingService;
         }
         public async ValueTask<GroupsStatistic> AddGroupsStatisticAsync(Group group)
         {
@@ -103,6 +106,55 @@ namespace SmartManager.Services.Processings.GroupsStatistics
             }
         }
 
+        public async ValueTask<GroupsStatistic> RetrieveGroupsStatisticByIdAsync(Guid groupsStatisticid) =>
+            await this.groupsStatisticService.RetrieveGroupsStatisticByIdAsync(groupsStatisticid);
+
+        public IQueryable<GroupsStatistic> RetrieveAllGroupsStatistics() =>
+            this.groupsStatisticService.RetrieveAllGroupsStatistics();
+
+        public async void ModifyGroupsStatisticAsync(Student student)
+        {
+            decimal studentsPercentageWithGroup;
+
+            GroupsStatistic groupsStatistic;
+
+            CountStatistics(student, out studentsPercentageWithGroup, out groupsStatistic);
+
+            if (groupsStatistic != null)
+            {
+                groupsStatistic.Percentage = studentsPercentageWithGroup;
+
+                await this.groupsStatisticService.ModifyGroupsStatisticAsync(groupsStatistic);
+
+                await UpdateOtherGroupsStatistics();
+            }
+            else
+            {
+                await AddGroupsStatisticsWithStudentsAsync(student);
+            }
+        }
+
+        private void CountStatistics(Student student, out decimal studentsPercentageWithGroup, out GroupsStatistic groupsStatistic)
+        {
+            var students = this.studentProcessingService.RetrieveAllStudents();
+            var studentsWithGroup = this.studentProcessingService
+                .RetrieveAllStudents().Where(s => s.GroupName == student.GroupName);
+
+            decimal studentsCount = students.Count();
+            decimal studentsCountWithGroup = studentsWithGroup.Count();
+
+            if (studentsCount != 0)
+                studentsPercentageWithGroup = (studentsCountWithGroup / studentsCount) * 100;
+            else
+                studentsPercentageWithGroup = 0;
+
+            groupsStatistic = this.groupsStatisticService
+                .RetrieveAllGroupsStatistics().FirstOrDefault(g => g.Name == student.GroupName);
+        }
+
+        public async ValueTask<GroupsStatistic> RemoveGroupsStatisticAsync(Guid groupsStatisticid) =>
+            await this.groupsStatisticService.RemoveGroupsStatisticAsync(groupsStatisticid);
+
         private async Task UpdateOtherGroupsStatistics()
         {
             var updatedStudents = this.studentProcessingService.RetrieveAllStudents();
@@ -125,18 +177,6 @@ namespace SmartManager.Services.Processings.GroupsStatistics
                 await this.groupsStatisticService.ModifyGroupsStatisticAsync(updatedGroupsStatistic);
             }
         }
-
-        public async ValueTask<GroupsStatistic> RetrieveGroupsStatisticByIdAsync(Guid groupsStatisticid) =>
-            await this.groupsStatisticService.RetrieveGroupsStatisticByIdAsync(groupsStatisticid);
-
-        public IQueryable<GroupsStatistic> RetrieveAllGroupsStatistics() =>
-            this.groupsStatisticService.RetrieveAllGroupsStatistics();
-
-        public async ValueTask<GroupsStatistic> ModifyGroupsStatisticAsync(GroupsStatistic groupsStatistic) =>
-            await this.groupsStatisticService.ModifyGroupsStatisticAsync(groupsStatistic);
-
-        public async ValueTask<GroupsStatistic> RemoveGroupsStatisticAsync(Guid groupsStatisticid) =>
-            await this.groupsStatisticService.RemoveGroupsStatisticAsync(groupsStatisticid);
     }
 }
 

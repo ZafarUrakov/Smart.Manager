@@ -32,13 +32,12 @@ namespace SmartManager.Brokers.Storages
 
                 return @object;
             }
-            catch (Exception)
+            catch(Exception ex)
             {
-
-                throw;
+                throw ex;
             }
-
         }
+
         public IQueryable<T> SelectAll<T>() where T : class
         {
             var broker = new StorageBroker(configuration);

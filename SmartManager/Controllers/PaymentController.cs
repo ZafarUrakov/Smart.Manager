@@ -32,7 +32,8 @@ namespace SmartManager.Controllers
                 Id = Guid.NewGuid(),
                 Amount = 900000,
                 Date = DateTime.Now,
-                IsPaid = isPayed
+                IsPaid = true,
+                StudentId = studentId
             };
 
             await this.paymentProcessingService.AddPaymentAsync(payment);
