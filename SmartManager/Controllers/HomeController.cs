@@ -33,7 +33,6 @@ namespace SmartManager.Controllers
         {
             return View();
         }
-
         public IActionResult Privacy()
         {
             return View();
