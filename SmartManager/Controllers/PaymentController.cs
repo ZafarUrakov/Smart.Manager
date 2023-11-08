@@ -6,6 +6,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartManager.Models.Payments;
 using SmartManager.Services.Processings.Payments;
+using SmartManager.Services.Processings.PaymentStatistics;
 using SmartManager.Services.Processings.Students;
 using System;
 using System.Threading.Tasks;
@@ -16,13 +17,16 @@ namespace SmartManager.Controllers
     {
         private readonly IPaymentProcessingService paymentProcessingService;
         private readonly IStudentProcessingService studentProcessingService;
+        private readonly IPaymentStatisticsProccessingService paymentStatisticsProccessingService;
 
         public PaymentController(
             IPaymentProcessingService paymentProcessingService,
-            IStudentProcessingService studentProcessingService)
+            IStudentProcessingService studentProcessingService,
+            IPaymentStatisticsProccessingService paymentStatisticsProccessingService)
         {
             this.paymentProcessingService = paymentProcessingService;
             this.studentProcessingService = studentProcessingService;
+            this.paymentStatisticsProccessingService = paymentStatisticsProccessingService;
         }
         [HttpPost]
         public async ValueTask<ActionResult> UpdatePaymentAsync(Guid studentId, bool isPayed)
@@ -36,7 +40,11 @@ namespace SmartManager.Controllers
                 StudentId = studentId
             };
 
+            var student = await this.studentProcessingService.RetrieveStudentByIdAsync(studentId);
+
             await this.paymentProcessingService.AddPaymentAsync(payment);
+
+            await this.paymentStatisticsProccessingService.AddPaymentStatisticAsync(student);
 
             return RedirectToAction("GetPayment", "Student");
         }
