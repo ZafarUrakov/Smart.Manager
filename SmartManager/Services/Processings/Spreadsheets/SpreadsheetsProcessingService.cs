@@ -3,14 +3,12 @@
 // Managre quickly and easy
 //===========================
 
-using SmartManager.Brokers.Loggings;
 using SmartManager.Models.ExternalStudents;
 using SmartManager.Models.Groups;
 using SmartManager.Models.Students;
 using SmartManager.Services.Foundations.Spreadsheets;
 using SmartManager.Services.Processings.Groups;
 using SmartManager.Services.Processings.GroupsStatistics;
-using SmartManager.Services.Processings.Payments;
 using SmartManager.Services.Processings.PaymentStatistics;
 using SmartManager.Services.Processings.Students;
 using System;

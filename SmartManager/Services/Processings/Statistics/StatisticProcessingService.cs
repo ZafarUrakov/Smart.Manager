@@ -21,8 +21,8 @@ namespace SmartManager.Services.Processings.Statistics
         private readonly IPaymentProcessingService paymentProcessingService;
 
         public StatisticProcessingService(
-            IStatisticService statisticService, 
-            IStudentProcessingService studentProcessingService, 
+            IStatisticService statisticService,
+            IStudentProcessingService studentProcessingService,
             IPaymentProcessingService paymentProcessingService)
         {
             this.statisticService = statisticService;
@@ -95,14 +95,14 @@ namespace SmartManager.Services.Processings.Statistics
             var paidStudents = this.paymentProcessingService.RetrieveAllPayments().Where(p => p.IsPaid == true);
             int paidStudetnsCount = paidStudents.Count();
 
-                decimal paidStudentsPercentage;
-                if (studentsCount != 0)
-                    paidStudentsPercentage = (paidStudetnsCount / studentsCount) * 100;
-                else
-                    paidStudentsPercentage = 0;
+            decimal paidStudentsPercentage;
+            if (studentsCount != 0)
+                paidStudentsPercentage = (paidStudetnsCount / studentsCount) * 100;
+            else
+                paidStudentsPercentage = 0;
 
-                statistic.PaidStudentsCount = paidStudetnsCount;
-                statistic.PaidStudentsPercentage = paidStudentsPercentage;
+            statistic.PaidStudentsCount = paidStudetnsCount;
+            statistic.PaidStudentsPercentage = paidStudentsPercentage;
 
             decimal totalPayment = 0;
 

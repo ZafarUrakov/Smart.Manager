@@ -124,19 +124,26 @@ namespace SmartManager.Controllers
         [HttpGet]
         public async ValueTask<IActionResult> DeleteStudent(Guid studentId)
         {
-            var students = this.studentProcessingService.RetrieveAllStudents();
+            try
+            {
+                var students = this.studentProcessingService.RetrieveAllStudents();
 
-            var student = students.SingleOrDefault(a => a.Id == studentId);
+                var student = students.FirstOrDefault(a => a.Id == studentId);
 
-            var removedStudent = await this.studentProcessingService.RemoveStudentAsync(student.Id);
+                var removedStudent = await this.studentProcessingService.RemoveStudentAsync(student.Id);
 
-            this.groupsStatisticProccessingService.ModifyGroupsStatisticAsync(removedStudent);
+                this.groupsStatisticProccessingService.ModifyGroupsStatisticAsync(removedStudent);
 
-            await this.statisticProcessingService.AddOrUpdateStatisticAsync();
+                await this.statisticProcessingService.AddOrUpdateStatisticAsync();
 
-            await this.paymentStatisticsProccessingService.AddPaymentStatisticAsync(removedStudent);
+                await this.paymentStatisticsProccessingService.AddPaymentStatisticAsync(removedStudent);
 
-            return RedirectToAction("GetStudents");
+                return RedirectToAction("GetStudents");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
