@@ -32,7 +32,7 @@ namespace SmartManager.Brokers.Storages
 
                 return @object;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
