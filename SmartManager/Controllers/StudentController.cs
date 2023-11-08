@@ -112,6 +112,8 @@ namespace SmartManager.Controllers
 
             this.groupsStatisticProccessingService.ModifyGroupsStatisticAsync(updatedStudent);
 
+            await this.paymentStatisticsProccessingService.AddPaymentStatisticAsync(updatedStudent);
+
             await this.statisticProcessingService.AddOrUpdateStatisticAsync();
 
             return RedirectToAction("GetStudents");
@@ -129,6 +131,8 @@ namespace SmartManager.Controllers
             this.groupsStatisticProccessingService.ModifyGroupsStatisticAsync(removedStudent);
 
             await this.statisticProcessingService.AddOrUpdateStatisticAsync();
+
+            await this.paymentStatisticsProccessingService.AddPaymentStatisticAsync(removedStudent);
 
             return RedirectToAction("GetStudents");
         }

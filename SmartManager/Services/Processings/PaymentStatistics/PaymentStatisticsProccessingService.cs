@@ -36,11 +36,11 @@ namespace SmartManager.Services.Processings.PaymentStatistics
         }
         public async ValueTask<PaymentStatistic> AddPaymentStatisticAsync(Student student)
         {
-            var students = this.studentProcessingService.RetrieveAllStudents();
+            var students = this.studentProcessingService.RetrieveAllStudents().Where(s => s.GroupId == student.GroupId);
             var group = await this.groupProcessingService.RetrieveGroupByIdAsync(student.GroupId);
 
-            int totalStudents = 0;
-            int paids = 0;
+            decimal totalStudents = 0;
+            decimal paids = 0;
 
             TotalCountStudentsAndPayments(student, students, ref totalStudents, ref paids);
 
@@ -66,20 +66,19 @@ namespace SmartManager.Services.Processings.PaymentStatistics
         }
 
         private void TotalCountStudentsAndPayments(
-            Student student, IQueryable<Student> students, ref int totalStudents, ref int paids)
+            Student student, IQueryable<Student> students, ref decimal totalStudents, ref decimal paids)
         {
-            var payments = this.paymentProcessingService.RetrieveAllPayments();
+            var payments = this.paymentProcessingService.RetrieveAllPayments().Where(p => p.GroupId == student.GroupId);
 
             foreach (var item in students)
             {
-
-                foreach (var payment in payments)
-                {
-                    if (payment.IsPaid == true)
-                        paids++;
-                }
-
                 totalStudents++;
+            }
+
+            foreach (var payment in payments)
+            {
+                if (payment.IsPaid == true)
+                    paids++;
             }
         }
 
@@ -99,8 +98,13 @@ namespace SmartManager.Services.Processings.PaymentStatistics
         public IQueryable<PaymentStatistic> RetrieveAllPaymentStatistics() =>
             this.paymentStatisticService.RetrieveAllPaymentStatistics();
 
-        public async ValueTask<PaymentStatistic> ModifyPaymentStatisticAsync(PaymentStatistic paymentStatistic) =>
-            await this.paymentStatisticService.ModifyPaymentStatisticAsync(paymentStatistic);
+        public async ValueTask<PaymentStatistic> ModifyPaymentStatisticAsync(Student student)
+        {
+            var paymentStatistic = this.paymentStatisticService
+                .RetrieveAllPaymentStatistics().FirstOrDefault(p => p.GroupId == student.GroupId);
+
+            return paymentStatistic;
+        }
 
         public async ValueTask<PaymentStatistic> RemovePaymentStatisticAsync(Guid paymentStatisticid) =>
             await this.paymentStatisticService.RemovePaymentStatisticAsync(paymentStatisticid);
