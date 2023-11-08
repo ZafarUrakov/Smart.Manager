@@ -3,7 +3,6 @@
 // Managre quickly and easy
 //===========================
 
-using SmartManager.Brokers.Storages;
 using SmartManager.Models.Groups;
 using SmartManager.Models.PaymentStatistics;
 using SmartManager.Models.Students;
@@ -36,39 +35,61 @@ namespace SmartManager.Services.Processings.PaymentStatistics
         }
         public async ValueTask<PaymentStatistic> AddPaymentStatisticAsync(Student student)
         {
-            var students = this.studentProcessingService.RetrieveAllStudents().Where(s => s.GroupId == student.GroupId);
-            var group = await this.groupProcessingService.RetrieveGroupByIdAsync(student.GroupId);
-
-            decimal totalStudents = 0;
-            decimal paids = 0;
-
-            TotalCountStudentsAndPayments(student, students, ref totalStudents, ref paids);
-
-            var paymentStatistic = this.paymentStatisticService
-                .RetrieveAllPaymentStatistics().FirstOrDefault(p => p.GroupId == group.Id);
-
-            if (paymentStatistic is null)
+            try
             {
-                PaymentStatistic newPaymentStatistic = AddPaymentStatisticIfNotFound(group);
+                var students = this.studentProcessingService.RetrieveAllStudents();
+                var group = await this.groupProcessingService.RetrieveGroupByIdAsync(student.GroupId);
 
-                newPaymentStatistic.PaidPercentage = (paids / totalStudents) * 100;
-                newPaymentStatistic.NotPaidPercentage = 100 - newPaymentStatistic.PaidPercentage;
+                decimal totalStudents = 0;
+                decimal paids = 0;
 
-                return await this.paymentStatisticService.AddPaymentStatisticAsync(newPaymentStatistic);
+                TotalCountStudentsAndPayments(student, students, ref totalStudents, ref paids);
+
+                var paymentStatistic = this.paymentStatisticService
+                    .RetrieveAllPaymentStatistics().FirstOrDefault(p => p.GroupId == group.Id);
+
+                if (paymentStatistic is null)
+                {
+                    PaymentStatistic newPaymentStatistic = AddPaymentStatisticIfNotFound(group);
+                    if (totalStudents != 0)
+                    {
+                        newPaymentStatistic.PaidPercentage = (paids / totalStudents) * 100;
+                        newPaymentStatistic.NotPaidPercentage = 100 - newPaymentStatistic.PaidPercentage;
+                    }
+                    else
+                    {
+                        newPaymentStatistic.PaidPercentage = 0;
+
+                        newPaymentStatistic.NotPaidPercentage = 100 - newPaymentStatistic.PaidPercentage;
+                    }
+
+                    return await this.paymentStatisticService.AddPaymentStatisticAsync(newPaymentStatistic);
+                }
+                else
+                {
+                    if (totalStudents != 0)
+                    {
+                        paymentStatistic.PaidPercentage = (paids / totalStudents) * 100;
+                        paymentStatistic.NotPaidPercentage = 100 - paymentStatistic.PaidPercentage;
+                    }
+                    else
+                    {
+                        paymentStatistic.PaidPercentage = 0;
+                        paymentStatistic.NotPaidPercentage = 100 - paymentStatistic.PaidPercentage;
+                    }
+                    return await this.paymentStatisticService.ModifyPaymentStatisticAsync(paymentStatistic);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                paymentStatistic.PaidPercentage = (paids / totalStudents) * 100;
-                paymentStatistic.NotPaidPercentage = 100 - paymentStatistic.PaidPercentage;
-
-                return await this.paymentStatisticService.ModifyPaymentStatisticAsync(paymentStatistic);
+                throw ex;
             }
         }
 
         private void TotalCountStudentsAndPayments(
             Student student, IQueryable<Student> students, ref decimal totalStudents, ref decimal paids)
         {
-            var payments = this.paymentProcessingService.RetrieveAllPayments().Where(p => p.GroupId == student.GroupId);
+            var payments = this.paymentProcessingService.RetrieveAllPayments();
 
             foreach (var item in students)
             {

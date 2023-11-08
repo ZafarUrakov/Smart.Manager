@@ -72,8 +72,16 @@ namespace SmartManager.Services.Processings.GroupsStatistics
 
             decimal studentsCount = students.Count();
             decimal studentsCountWithGroup = studentsWithGroup.Count();
+            decimal studentsPercentageWithGroup;
 
-            decimal studentsPercentageWithGroup = (studentsCountWithGroup / studentsCount) * 100;
+            if (studentsCount is not 0)
+            {
+                studentsPercentageWithGroup = (studentsCountWithGroup / studentsCount) * 100;
+            }
+            else
+            {
+                studentsPercentageWithGroup = 0;
+            }
 
             var groupsStatistic = this.groupsStatisticService
                 .RetrieveAllGroupsStatistics().FirstOrDefault(g => g.Name == student.GroupName);

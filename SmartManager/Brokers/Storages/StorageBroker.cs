@@ -32,7 +32,7 @@ namespace SmartManager.Brokers.Storages
 
                 return @object;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -79,9 +79,9 @@ namespace SmartManager.Brokers.Storages
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = this.configuration.GetConnectionString(name: "DefaultConnection");
+            string connectionString = "Data source = Smart.db";
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlite(connectionString);
         }
 
         public override void Dispose() { }
