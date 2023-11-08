@@ -108,9 +108,11 @@ namespace SmartManager.Controllers
         [HttpPost]
         public async ValueTask<IActionResult> PutStudent(Student student)
         {
+            var oldStudent = await this.studentProcessingService.RetrieveStudentByIdAsync(student.Id);
+
             var updatedStudent = await studentProcessingService.ModifyStudentAsync(student);
 
-            this.groupsStatisticProccessingService.ModifyGroupsStatisticAsync(updatedStudent);
+            this.groupsStatisticProccessingService.ModifyGroupsStatisticAsync(oldStudent);
 
             await this.statisticProcessingService.AddOrUpdateStatisticAsync();
 
