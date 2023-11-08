@@ -12,7 +12,6 @@ namespace SmartManager.Controllers
     public class HomeController : Controller
     {
         private readonly IStatisticProcessingService statisticProcessingService;
-
         public HomeController(IStatisticProcessingService statisticProcessingService)
         {
             this.statisticProcessingService = statisticProcessingService;
