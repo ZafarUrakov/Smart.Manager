@@ -39,7 +39,6 @@ namespace SmartManager.Controllers
                 IsPresent = isPresent
             };
 
-
             await this.attendanceProcessingService.AddAttendanceAsync(attendance);
 
             return RedirectToAction("GetStudents", "Student");
