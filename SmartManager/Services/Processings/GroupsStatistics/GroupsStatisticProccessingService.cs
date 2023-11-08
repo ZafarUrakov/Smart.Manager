@@ -172,9 +172,24 @@ namespace SmartManager.Services.Processings.GroupsStatistics
                 var updatedGroupsStatistic = this.groupsStatisticService
                     .RetrieveAllGroupsStatistics().FirstOrDefault(g => g.Name == updateStudent.GroupName);
 
-                updatedGroupsStatistic.Percentage = updatedStudentsPercentageWithGroup;
+                if (updatedGroupsStatistic is null)
+                {
+                    GroupsStatistic groupsStatistic = new GroupsStatistic
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = updateStudent.GroupName,
+                        Percentage = updatedStudentsPercentageWithGroup,
+                        GroupId = updateStudent.GroupId,
+                    };
 
-                await this.groupsStatisticService.ModifyGroupsStatisticAsync(updatedGroupsStatistic);
+                    await this.groupsStatisticService.AddGroupsStatisticAsync(groupsStatistic);
+                }
+                else
+                {
+                    updatedGroupsStatistic.Percentage = updatedStudentsPercentageWithGroup;
+
+                    await this.groupsStatisticService.ModifyGroupsStatisticAsync(updatedGroupsStatistic);
+                }
             }
         }
     }
